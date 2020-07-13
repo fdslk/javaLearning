@@ -17,3 +17,5 @@ target/
 *.log
 *.lnk
 .eclipse/
+*.log
+*.1
