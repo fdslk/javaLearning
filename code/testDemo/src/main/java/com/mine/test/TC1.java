@@ -49,15 +49,16 @@ public class TC1 {
 
         driver.findElement(By.id("submit")).click();
 
+        try{
+            Thread.sleep(3000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
         String text = driver.findElement(By.cssSelector("#siteNav > a:nth-child(1)")).getText();
 
         Assert.assertEquals(text, "fzq");
 
-        try{
-            Thread.sleep(300);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
         driver.close();
     }
 
