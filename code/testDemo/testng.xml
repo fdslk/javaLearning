@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
+    <parameter name="report.config" value="src/main/resources/config/report/extent-config.xml"></parameter>
+    <parameter name="system.info" value="com.mine.test.commonFunc.MySystemInfo"></parameter>
     <test verbose="2" preserve-order="true" name="D:/learning demo/javaLearning/code/testDemo">
         <classes>
 <!--            <class name="com.mine.test.TC1">-->
