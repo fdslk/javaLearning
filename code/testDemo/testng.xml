@@ -3,13 +3,13 @@
 <suite name="All Test Suite">
     <test verbose="2" preserve-order="true" name="D:/learning demo/javaLearning/code/testDemo">
         <classes>
-            <class name="com.mine.test.TC1">
-                <methods>
-                    <include name="case1"/>
-                    <include name="case2"/>
-                    <include name="actions"/>
-                </methods>
-            </class>
+<!--            <class name="com.mine.test.TC1">-->
+<!--                <methods>-->
+<!--                    <include name="case1"/>-->
+<!--                    <include name="case2"/>-->
+<!--                    <include name="actions"/>-->
+<!--                </methods>-->
+<!--            </class>-->
             <class name="com.mine.test.TestLogin">
                 <methods>
                     <include name="loginBaiduPan"/>

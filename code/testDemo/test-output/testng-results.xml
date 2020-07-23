@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" ignored="0" total="2" passed="2">
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default Suite" duration-ms="52" started-at="2020-07-15T10:27:36 CST" finished-at="2020-07-15T10:27:36 CST">
+  <suite name="Default Suite" duration-ms="19830" started-at="2020-07-23T18:11:18 CST" finished-at="2020-07-23T18:11:38 CST">
     <groups>
     </groups>
-    <test name="testDemo" duration-ms="52" started-at="2020-07-15T10:27:36 CST" finished-at="2020-07-15T10:27:36 CST">
-      <class name="com.mine.test.TC1">
-        <test-method status="PASS" signature="case1()[pri:0, instance:com.mine.test.TC1@66d2e7d9]" name="case1" duration-ms="8" started-at="2020-07-15T10:27:36 CST" finished-at="2020-07-15T10:27:36 CST">
+    <test name="testDemo" duration-ms="19830" started-at="2020-07-23T18:11:18 CST" finished-at="2020-07-23T18:11:38 CST">
+      <class name="com.mine.test.TestLogin">
+        <test-method status="PASS" signature="loginBaiduPan()[pri:0, instance:com.mine.test.TestLogin@687080dc]" name="loginBaiduPan" duration-ms="19793" started-at="2020-07-23T18:11:18 CST" finished-at="2020-07-23T18:11:38 CST">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- case1 -->
-        <test-method status="PASS" signature="case2()[pri:0, instance:com.mine.test.TC1@66d2e7d9]" name="case2" duration-ms="0" started-at="2020-07-15T10:27:36 CST" finished-at="2020-07-15T10:27:36 CST">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- case2 -->
-      </class> <!-- com.mine.test.TC1 -->
+        </test-method> <!-- loginBaiduPan -->
+      </class> <!-- com.mine.test.TestLogin -->
     </test> <!-- testDemo -->
   </suite> <!-- Default Suite -->
 </testng-results>
