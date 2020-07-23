@@ -10,6 +10,11 @@
                     <include name="actions"/>
                 </methods>
             </class>
+            <class name="com.mine.test.TestLogin">
+                <methods>
+                    <include name="loginBaiduPan"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>
