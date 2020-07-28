@@ -20,7 +20,7 @@ public class TestLogin {
 
     @Test
     public void loginBaiduPan(){
-        System.setProperty("webdriver.chrome.driver", "E:\\setup\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "F:\\setup\\chromedriver_win32\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.get("http://pan.baidu.com/");
 
@@ -47,7 +47,7 @@ public class TestLogin {
 
         driver.findElement(By.cssSelector("#TANGRAM__PSP_4__submit")).click();
 
-        Common.threadSleep(3000);
+        Common.threadSleep(5000);
 
         driver.findElement(By.cssSelector("#dialog1 > div.dialog-body > div > div.know-button > span")).click();
 
