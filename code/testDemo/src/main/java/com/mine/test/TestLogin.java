@@ -57,4 +57,8 @@ public class TestLogin {
 
         driver.close();
     }
+
+    public void testDataProvider(String username, String password, String prompt){
+        
+    }
 }
