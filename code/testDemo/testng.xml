@@ -15,6 +15,7 @@
             <class name="com.mine.test.TestLogin">
                 <methods>
                     <include name="loginBaiduPan"/>
+                    <include name="testDataProvider"/>
                 </methods>
             </class>
         </classes>
