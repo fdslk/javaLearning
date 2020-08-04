@@ -20,4 +20,7 @@ public class MySystemInfo implements SystemInfo {
         systemInfo.put("operator", "fzq");
         return systemInfo;
     }
+
+    public static String userName = "fzq@123.com";
+    public static String pwd = "123qwe@@";
 }
