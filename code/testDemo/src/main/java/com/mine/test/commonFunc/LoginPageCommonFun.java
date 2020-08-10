@@ -13,7 +13,8 @@ import org.testng.annotations.BeforeClass;
  */
 public class LoginPageCommonFun extends BasicConfig {
 
-//    public BasicTest(){
-//        super();
-//    }
+    public void loginBaiDu(){
+
+    }
+
 }

@@ -1,6 +1,10 @@
 package com.mine.test;
 
+import com.mine.test.commonFunc.Common;
 import com.mine.test.commonFunc.LoginPageCommonFun;
+import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.TestNG;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -11,6 +15,7 @@ import org.testng.annotations.Test;
  * @Date 2020/7/23 15:22
  * @Created by Administrator
  */
+@Slf4j
 public class TestLogin extends TestNG {
     private static String userId = "907081174@qq.com";
 
@@ -21,41 +26,39 @@ public class TestLogin extends TestNG {
 
         LoginPageCommonFun test = new LoginPageCommonFun();
         test.driver.get("http://pan.baidu.com/");
-        LoginPageCommonFun test1 = new LoginPageCommonFun();
-        test1.driver.get("http://pan.baidu.com/");
 
         String loginMethod;
 
-//        Common.threadSleep(1000);
+        Common.threadSleep(1000);
 
-//        loginMethod = driver.findElement(By.cssSelector("#TANGRAM__PSP_4__footerULoginBtn")).getText();
-//
-//        if(loginMethod.equals("帐号密码登录")) {
-//            driver.findElement(By.cssSelector("#TANGRAM__PSP_4__footerULoginBtn")).click();
-//        }
-//
-//        for (char item : userId.toCharArray()) {
-//            driver.findElement(By.cssSelector("#TANGRAM__PSP_4__userName")).sendKeys(String.valueOf(item));
-//            Common.threadSleep(300);
-//        }
-//
-//        for (char item : pwd.toCharArray()) {
-//            driver.findElement(By.cssSelector("#TANGRAM__PSP_4__password")).sendKeys(String.valueOf(item));
-//            Common.threadSleep(300);
-//        }
-//
-//
-//        driver.findElement(By.cssSelector("#TANGRAM__PSP_4__submit")).click();
-//
-//        Common.threadSleep(5000);
-//
-//        driver.findElement(By.cssSelector("#dialog1 > div.dialog-body > div > div.know-button > span")).click();
-//
-//        String userNickName = driver.findElement(By.xpath("/html/body/div[1]/div[1]/div/div/dl/dd[2]/span/span[2]")).getText();
-//
-//        Assert.assertEquals(userNickName, "我是背包客无悔");
-//
-//        driver.close();
+        loginMethod = test.driver.findElement(By.cssSelector("#TANGRAM__PSP_4__footerULoginBtn")).getText();
+
+        if(loginMethod.equals("帐号密码登录")) {
+            test.driver.findElement(By.cssSelector("#TANGRAM__PSP_4__footerULoginBtn")).click();
+        }
+        log.info("==============>输入密码{}"+ pwd);
+        for (char item : userId.toCharArray()) {
+            test.driver.findElement(By.cssSelector("#TANGRAM__PSP_4__userName")).sendKeys(String.valueOf(item));
+            Common.threadSleep(300);
+        }
+
+        for (char item : pwd.toCharArray()) {
+            test.driver.findElement(By.cssSelector("#TANGRAM__PSP_4__password")).sendKeys(String.valueOf(item));
+            Common.threadSleep(300);
+        }
+
+        log.info("=============>登陆成功！");
+        test.driver.findElement(By.cssSelector("#TANGRAM__PSP_4__submit")).click();
+
+        Common.threadSleep(5000);
+
+        test.driver.findElement(By.cssSelector("#dialog1 > div.dialog-body > div > div.know-button > span")).click();
+
+        String userNickName = test.driver.findElement(By.xpath("/html/body/div[1]/div[1]/div/div/dl/dd[2]/span/span[2]")).getText();
+
+        Assert.assertEquals(userNickName, "我是背包客无悔");
+
+        test.driver.close();
     }
     @DataProvider(name = "data")
     public Object[][] dataProvider1(){
