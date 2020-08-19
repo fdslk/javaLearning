@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component("annotatedConsumer")
 public class ConsumerAnnotationService {
 
-    @Reference
+    @Reference(version = "provider")
     private ProviderServiceAnnotation providerServiceAnnotation;
 
     public String doSayHello(String name){

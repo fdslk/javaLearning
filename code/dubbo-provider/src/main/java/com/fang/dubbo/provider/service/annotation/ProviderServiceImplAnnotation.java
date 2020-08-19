@@ -10,7 +10,7 @@ import com.alibaba.dubbo.config.annotation.Service;
  * @Description: TODO
  * @date
  */
-@Service(timeout = 5000)
+@Service(timeout = 5000,version = "provider")
 public class ProviderServiceImplAnnotation implements ProviderServiceAnnotation {
     public String sayHelloAnnotation(String word) {
         return "hello "+  word;

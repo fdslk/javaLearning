@@ -23,7 +23,7 @@ public class CalculatorForPpiController {
     private CalculatorForPpiService calculatorForPpiService;
 
     @RequestMapping("/calculate")
-    public String calculate(@RequestParam("width") int width, @RequestParam("height") int height, @RequestParam("size") int size){
+    public String calculate(@RequestParam("width") int width, @RequestParam("height") int height, @RequestParam("size") double size){
         try {
             long result = calculatorForPpiService.calculate(width, height, size);
             log.info("=====================>result:" + result);

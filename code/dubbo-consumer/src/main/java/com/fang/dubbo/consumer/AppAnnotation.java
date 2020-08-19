@@ -1,7 +1,9 @@
 package com.fang.dubbo.consumer;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.fang.dubbo.consumer.Annotation.ConsumerAnnotationService;
 import com.fang.dubbo.consumer.configuration.ConsumerConfiguration;
+import com.fang.dubbo.provider.service.annotation.ProviderServiceAnnotation;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
@@ -14,7 +16,11 @@ import java.io.IOException;
  * @Description: TODO
  * @date
  */
+
+
 public class AppAnnotation {
+
+
     public static void main(String[] args) throws IOException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConsumerConfiguration.class);
         context.start();

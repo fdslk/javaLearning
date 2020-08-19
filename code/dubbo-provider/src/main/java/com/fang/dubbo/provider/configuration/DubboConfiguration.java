@@ -35,7 +35,7 @@ public class DubboConfiguration {
     public RegistryConfig registryConfig(){
         RegistryConfig registryConfig = new RegistryConfig();
         registryConfig.setProtocol("zookeeper");
-        registryConfig.setAddress("localhost");
+        registryConfig.setAddress("127.0.0.1");
         registryConfig.setPort(2181);
         return registryConfig;
     }
