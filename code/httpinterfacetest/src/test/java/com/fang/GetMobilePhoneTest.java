@@ -7,9 +7,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.net.URI;
 
 /**
@@ -37,6 +39,15 @@ public class GetMobilePhoneTest {
         Assert.assertEquals(sendHttpGetRequest(client, ""), "");
     }
 
+    @AfterClass
+    public void clear(){
+        try {
+            response.close();
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private String sendHttpGetRequest(CloseableHttpClient client, String model) {
         String result = null;
         try{
