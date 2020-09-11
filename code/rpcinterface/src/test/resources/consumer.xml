@@ -4,5 +4,5 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
     <dubbo:application name="RPCDubboConsumer"/>
     <dubbo:registry address="zookeeper://localhost:2181"/>
-    <dubbo:reference id="mobilePhoneService" interface="com.lujiatao.rpcinterface.dubbo.MobilePhoneService" version="1.0.0"/>
+    <dubbo:reference id="mobilePhoneService" interface="com.lujiatao.rpcinterface.dubbo.MobilePhoneService" version="1.0.0" url="dubbo://localhost:20880"/>
 </beans>
