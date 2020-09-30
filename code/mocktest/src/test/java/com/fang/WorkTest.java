@@ -50,4 +50,12 @@ public class WorkTest {
         int expected = 5;
         Assert.assertEquals(actual, expected);
     }
+
+    @Test
+    public void testCase4(){
+        Mockito.when(weather.getWeather()).thenReturn("阴");
+        int acutal = work.getWorkTime();
+        int expected = 8;
+        Assert.assertEquals(acutal, expected);
+    }
 }
