@@ -1,0 +1,22 @@
+containers:
+  build-env:
+    image: maven:3.6.0-jdk-11-slim
+    volumes:
+      - local: .
+        container: /code
+    working_directory: /code
+    run_as_current_user:
+      enabled: true
+      home_directory: /home/container-user
+tasks:
+  shell:
+    description: Start a shell in the development environment
+    run:
+      container: build-env
+      command: bash
+
+  lint:
+    description: generate lint report
+    run:
+      container: build-env
+      command: mvn site
