@@ -4,12 +4,17 @@ containers:
     volumes:
       - local: .
         container: /code
-    working_directory: /code
+        options: cached
+      - local: ~/.m2
+        container: /home/container-user/.m2
+        options: cached
     run_as_current_user:
       enabled: true
       home_directory: /home/container-user
+    working_directory: /code
+
 tasks:
-  shell:
+  buildEnv:
     description: Start a shell in the development environment
     run:
       container: build-env
