@@ -1,0 +1,35 @@
+containers:
+  build-env:
+    image: openjdk:13.0.2-jdk
+    run_as_current_user:
+      enabled: true
+      home_directory: /home/container-user
+    volumes:
+      - local: .
+        container: /code
+        options: cached
+      - local: ~/.gradle
+        container: /home/container-user/.gradle
+        options: cached
+    working_directory: /code
+    environment:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+
+tasks:
+  buildEnv:
+    description: Start a shell in the development environment
+    run:
+      container: build-env
+      command: bash
+
+  build-with-gradle:
+    description: Build and test with Gradle
+    run:
+      container: build-env
+      command: ./gradlew --no-daemon --warning-mode=all clean build
+
+  test-with-gradle:
+    description: Build and test with Gradle
+    run:
+      container: build-env
+      command: ./gradlew test
