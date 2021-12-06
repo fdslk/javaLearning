@@ -19,3 +19,6 @@ target/
 .eclipse/
 *.log
 *.1
+/*/build/*
+/*/.gradle/*
+/*/gradle/*
