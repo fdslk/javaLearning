@@ -15,15 +15,26 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit4</artifactId>
+            <version>2.17.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <aspectj.version>1.8.10</aspectj.version>
     </properties>
     <reporting>
         <plugins>
+            <plugin>
+                <groupId>ru.yandex.qatools.allure</groupId>
+                <artifactId>allure-maven-plugin</artifactId>
+<!--                <version>2.5</version>-->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -79,6 +90,41 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.2</version>
+                    <configuration>
+                        <testFailureIgnore>false</testFailureIgnore>
+                        <argLine>
+                            -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        </argLine>
+                        <properties>
+                            <property>
+                                <name>listener</name>
+                                <value>io.qameta.allure.junit4.AllureJunit4</value>
+                            </property>
+                        </properties>
+                        <systemProperties>
+                            <property>
+                                <name>allure.results.directory</name>
+                                <value>${project.build.directory}/allure-results</value>
+                            </property>
+                        </systemProperties>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.aspectj</groupId>
+                            <artifactId>aspectjweaver</artifactId>
+                            <version>${aspectj.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                   <groupId>io.qameta.allure</groupId>
+                    <artifactId>allure-maven</artifactId>
+                    <version>2.10.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
