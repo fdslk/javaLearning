@@ -24,4 +24,10 @@ tasks:
     description: generate lint report
     run:
       container: build-env
-      command: mvn site
+      command: mvn site -e
+
+  unitTest:
+    description: unit test for demo
+    run:
+      container: build-env
+      command: mvn clean test

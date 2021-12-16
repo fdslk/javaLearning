@@ -22,4 +22,13 @@ public final class Operation {
     public static int add(final int a, final int b) {
         return a + b;
     }
+
+    /**
+     * reduce operation.
+     * @param a
+     * @param b
+     * @return a - b
+     */
+    public static int reduce(final int a, final int b) {
+        return a - b; }
 }
