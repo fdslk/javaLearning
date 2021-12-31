@@ -20,7 +20,7 @@ public class TestController {
 
     @GetMapping("/helloBaidu")
     public Mono<String> SayHelloToBaidu(){
-        var webClient = WebClient.builder().baseUrl("http://localhost:9999/baidu.com").build();
+        WebClient webClient = WebClient.builder().baseUrl("http://localhost:9999/baidu.com").build();
         Mono<String> result = webClient.get().retrieve().bodyToMono(String.class);
         return result;
     }
