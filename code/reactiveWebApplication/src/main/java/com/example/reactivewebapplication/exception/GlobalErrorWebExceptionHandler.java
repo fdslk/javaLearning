@@ -1,4 +1,4 @@
-package com.example.demo.exception;
+package com.example.reactivewebapplication.exception;
 
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
