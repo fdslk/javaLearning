@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.customer.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,9 +14,12 @@ import java.io.IOException;
 @Controller
 @RestController
 public class TestController {
+    @Autowired
+    private Customer customer;
 
     @GetMapping("/hello")
     public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
+        customer.printContent();
         return String.format("Hello %s!", name);
     }
 

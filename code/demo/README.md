@@ -8,3 +8,6 @@
   * clientAndServer mock dependent client
 * maven
   * mvn spring-boot:run compile and run my application by mvn
+* @Value
+  * need to care about the injection sequence.
+    * https://stackoverflow.com/questions/25764459/spring-boot-application-properties-value-not-populating

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-@Component
+//@Component
 public class MyCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args){
