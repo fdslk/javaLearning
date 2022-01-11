@@ -16,6 +16,9 @@ public class Customer {
     @Value("10")
     private int defaultInt;
 
+    @Value("${app.description}")
+    private String description;
+
     public Customer(){
     }
 
@@ -24,5 +27,6 @@ public class Customer {
         System.out.println("name = " + name);
         System.out.println("defaultBoolean = " + defaultBoolean);
         System.out.println("defaultInt = " + defaultInt);
+        System.out.println("description = " + description);
     }
 }
