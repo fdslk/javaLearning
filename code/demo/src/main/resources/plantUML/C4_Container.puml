@@ -1,0 +1,15 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+' existing plantuml version as text
+%version()
+
+' new C4-Plantuml version as text
+C4Version()
+
+' new C4-Plantuml version details (incl. PlantUML version) as table
+C4VersionDetails()
+
+' version functions used in e.g. footer
+footer drawn with PlantUML v. %version() and C4-PlantUML v. C4Version()
+@enduml
