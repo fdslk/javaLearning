@@ -11,3 +11,6 @@
 * @Value
   * need to care about the injection sequence.
     * https://stackoverflow.com/questions/25764459/spring-boot-application-properties-value-not-populating
+* plantuml
+  * Archimate-PlantUML
+    * https://github.com/plantuml-stdlib/Archimate-PlantUML
