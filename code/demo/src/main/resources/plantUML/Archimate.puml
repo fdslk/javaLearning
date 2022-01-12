@@ -1,0 +1,5 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+Rel_Composition(StakeholderElement, BService, "Description for the relationship")
+Rel_Composition_Down(StakeholderElement1, BService1, "Description for the relationship")
+@enduml
