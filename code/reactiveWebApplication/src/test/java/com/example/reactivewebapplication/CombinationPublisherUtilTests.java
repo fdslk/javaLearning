@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class CombinationPublisherUtilTests {
     @Test
     void shouldReturnOddNumberListWhenCallCreateOddNumbers() {
@@ -12,7 +14,7 @@ public class CombinationPublisherUtilTests {
 
         StepVerifier
                 .create(oddNumbers)
-                .expectNext(1)
+                .assertNext(t -> assertThat(t).isEqualTo(1))
                 .expectNext(3)
                 .expectNext(5)
                 .expectNext(7)
