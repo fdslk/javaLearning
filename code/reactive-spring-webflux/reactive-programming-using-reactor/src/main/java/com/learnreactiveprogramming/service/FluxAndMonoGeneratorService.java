@@ -88,6 +88,13 @@ public class FluxAndMonoGeneratorService {
                 .flatMap(this::splitStringMono);
     }
 
+    public Flux<String> namesMono_flatMapMany(int stringLength){
+        return Mono.just("alex")
+                .map(String::toUpperCase)
+                .filter(s -> s.length() > stringLength)
+                .flatMapMany(this::splitName);
+    }
+
     private Mono<io.vavr.collection.List<String>> splitStringMono(String s) {
         String[] split = s.split("");
         io.vavr.collection.List<String> of = io.vavr.collection.List.of(split);
