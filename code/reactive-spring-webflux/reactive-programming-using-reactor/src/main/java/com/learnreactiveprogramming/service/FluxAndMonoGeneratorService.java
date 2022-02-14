@@ -81,6 +81,19 @@ public class FluxAndMonoGeneratorService {
                 .flatMapSequential(s -> splitName_withDelay(s)).log();
     }
 
+    public Mono<io.vavr.collection.List<String>> namesMono_flatMap(int stringLength){
+        return Mono.just("alex")
+                .map(String::toUpperCase)
+                .filter(s -> s.length() > stringLength)
+                .flatMap(this::splitStringMono);
+    }
+
+    private Mono<io.vavr.collection.List<String>> splitStringMono(String s) {
+        String[] split = s.split("");
+        io.vavr.collection.List<String> of = io.vavr.collection.List.of(split);
+        return Mono.just(of);
+    }
+
 
     private Flux<String> splitName(String s) {
         String[] split = s.split("");
