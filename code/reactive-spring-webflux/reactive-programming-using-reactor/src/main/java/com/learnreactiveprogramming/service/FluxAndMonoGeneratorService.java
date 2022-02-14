@@ -59,6 +59,17 @@ public class FluxAndMonoGeneratorService {
                 .flatMap(s -> splitName(s));
     }
 
+    public Flux<String> nameFlux_concatMap(int stringLength){
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("aa");
+        strings.add("bbb");
+        strings.add("ccc");
+        return Flux.fromIterable(strings)
+                .filter(s -> s.length() > stringLength)
+                .map(String::toUpperCase)
+                .concatMap(s -> splitName(s));
+    }
+
     public Flux<String> nameFlux_flatMapSequential_async(int stringLength){
         ArrayList<String> strings = new ArrayList<>();
         strings.add("aa");
