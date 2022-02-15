@@ -11,6 +11,12 @@ import java.util.function.Function;
 
 public class FluxAndMonoGeneratorService {
 
+    private final StringUtil stringUtil;
+
+    public FluxAndMonoGeneratorService(StringUtil stringUtil) {
+         this.stringUtil = stringUtil;
+    }
+
     public Flux<String> nameFlux() {
         ArrayList<String> strings = new ArrayList<>();
         strings.add("aaa");
@@ -108,6 +114,11 @@ public class FluxAndMonoGeneratorService {
                 .flatMapMany(this::splitName);
     }
 
+    public Flux<String> test(){
+        return stringUtil.nameMono_flatMap();
+    }
+
+
     private Mono<io.vavr.collection.List<String>> splitStringMono(String s) {
         String[] split = s.split("");
         io.vavr.collection.List<String> of = io.vavr.collection.List.of(split);
@@ -127,16 +138,16 @@ public class FluxAndMonoGeneratorService {
                 .delayElements(Duration.ofMillis(i));
     }
 
-    public static void main(String[] args) {
-        FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
-        fluxAndMonoGeneratorService.nameFlux()
-        .subscribe(name -> {
-            System.out.println(name);
-        });
-
-        fluxAndMonoGeneratorService.nameMono()
-        .subscribe(name -> {
-            System.out.println(name);
-        });
-    }
+//    public static void main(String[] args) {
+//        FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
+//        fluxAndMonoGeneratorService.nameFlux()
+//        .subscribe(name -> {
+//            System.out.println(name);
+//        });
+//
+//        fluxAndMonoGeneratorService.nameMono()
+//        .subscribe(name -> {
+//            System.out.println(name);
+//        });
+//    }
 }

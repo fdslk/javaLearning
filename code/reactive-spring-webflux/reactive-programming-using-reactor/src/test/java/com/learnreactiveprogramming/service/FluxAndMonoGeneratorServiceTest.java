@@ -1,18 +1,27 @@
 package com.learnreactiveprogramming.service;
 
 import io.vavr.collection.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-
 class FluxAndMonoGeneratorServiceTest {
     private final FluxAndMonoGeneratorService fluxAndMonoGeneratorService;
 
+    private final StringUtil stringUtilMock;
+
+
     public FluxAndMonoGeneratorServiceTest(){
-        fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
+        stringUtilMock = Mockito.mock(StringUtil.class);
+        fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService(stringUtilMock);
+    }
+
+    @BeforeEach
+    public void initTest(){
+        org.mockito.Mockito.when(stringUtilMock.nameMono_flatMap()).thenReturn(Flux.empty());
     }
     @Test
     void givenFlux_WhennameFLuxIsInvoked_ThenReturnFlux(){
@@ -92,5 +101,13 @@ class FluxAndMonoGeneratorServiceTest {
         StepVerifier.create(stringFlux)
                 .expectNext("B", "B", "B", "C", "C", "C")
                 .verifyComplete();
+    }
+
+    @Test
+    void test_Mock(){
+        org.mockito.Mockito.when(stringUtilMock.nameMono_flatMap()).thenReturn(Flux.just("bob"));
+        StepVerifier.create(fluxAndMonoGeneratorService.test())
+                .expectNext("bob")
+               .verifyComplete();
     }
 }
