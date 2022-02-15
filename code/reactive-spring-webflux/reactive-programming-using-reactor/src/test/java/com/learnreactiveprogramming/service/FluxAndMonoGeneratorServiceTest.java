@@ -126,4 +126,12 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("D", "E", "F", "A", "U", "L", "T")
                 .verifyComplete();
     }
+
+    @Test
+    void explore_concat() {
+        Flux<String> stringFlux = fluxAndMonoGeneratorService.explore_concat();
+        StepVerifier.create(stringFlux)
+                .expectNext("A", "B", "C","D")
+                .verifyComplete();
+    }
 }

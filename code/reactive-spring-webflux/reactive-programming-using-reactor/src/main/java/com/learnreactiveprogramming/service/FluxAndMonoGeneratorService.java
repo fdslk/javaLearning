@@ -135,6 +135,17 @@ public class FluxAndMonoGeneratorService {
         return stringUtil.nameMono_flatMap();
     }
 
+    public Flux<String> explore_concat(){
+        Flux<String> just = Flux.just("A", "B");
+        Flux<String> just1 = Flux.just("C", "D");
+        return just.concatWith(just1);
+    }
+
+    public Flux<String> explore_concat_mono(){
+        Flux<String> just = Flux.just("A");
+        Mono<String> just1 = Mono.just("C");
+        return just.concatWith(just1);
+    }
 
     private Mono<io.vavr.collection.List<String>> splitStringMono(String s) {
         String[] split = s.split("");
