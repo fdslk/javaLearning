@@ -104,10 +104,26 @@ class FluxAndMonoGeneratorServiceTest {
     }
 
     @Test
+    void nameFlux_transforms_filterMoreThanMaxLength() {
+        Flux<String> stringFlux = fluxAndMonoGeneratorService.nameFlux_transforms(6);
+        StepVerifier.create(stringFlux)
+                .expectNext("default")
+                .verifyComplete();
+    }
+
+    @Test
     void test_Mock(){
         org.mockito.Mockito.when(stringUtilMock.nameMono_flatMap()).thenReturn(Flux.just("bob"));
         StepVerifier.create(fluxAndMonoGeneratorService.test())
                 .expectNext("bob")
                .verifyComplete();
+    }
+
+    @Test
+    void nameFlux_transforms_switchIfEmpty() {
+        Flux<String> stringFlux = fluxAndMonoGeneratorService.nameFlux_transforms_switchIfEmpty(6);
+        StepVerifier.create(stringFlux)
+                .expectNext("D", "E", "F", "A", "U", "L", "T")
+                .verifyComplete();
     }
 }
