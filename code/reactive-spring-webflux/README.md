@@ -11,6 +11,8 @@
     * reduce
     * concatMap
       * asynchronously
+    * transform
+      * receive a function and return a flux objec
   * mono 常用操作
     * flatMap
       * asynchronously operator

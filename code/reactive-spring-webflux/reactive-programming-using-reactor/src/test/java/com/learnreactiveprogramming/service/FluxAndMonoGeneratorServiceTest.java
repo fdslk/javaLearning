@@ -85,4 +85,12 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("A", "L", "E", "X")
                 .verifyComplete();
     }
+
+    @Test
+    void nameFlux_transforms() {
+        Flux<String> stringFlux = fluxAndMonoGeneratorService.nameFlux_transforms(2);
+        StepVerifier.create(stringFlux)
+                .expectNext("B", "B", "B", "C", "C", "C")
+                .verifyComplete();
+    }
 }

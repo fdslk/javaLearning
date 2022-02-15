@@ -1,11 +1,13 @@
 package com.learnreactiveprogramming.service;
 
+import io.vavr.collection.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Function;
 
 public class FluxAndMonoGeneratorService {
 
@@ -56,6 +58,17 @@ public class FluxAndMonoGeneratorService {
         return Flux.fromIterable(strings)
                 .filter(s -> s.length() > stringLength)
                 .map(String::toUpperCase)
+                .flatMap(s -> splitName(s));
+    }
+
+    public Flux<String> nameFlux_transforms(int stringLength){
+        List<String> of = List.of("aa", "bbb", "ccc");
+
+        Function<Flux<String>, Flux<String>> filterMap = name -> name.filter(s -> s.length() > stringLength)
+                .map(String::toUpperCase);
+
+        return Flux.fromIterable(of)
+                .transform(filterMap)
                 .flatMap(s -> splitName(s));
     }
 
