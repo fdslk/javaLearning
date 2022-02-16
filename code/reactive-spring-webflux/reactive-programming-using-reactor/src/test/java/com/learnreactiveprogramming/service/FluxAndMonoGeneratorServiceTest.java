@@ -134,4 +134,20 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("A", "B", "C","D")
                 .verifyComplete();
     }
+
+    @Test
+    void explore_merge() {
+        Flux<String> stringFlux = fluxAndMonoGeneratorService.explore_merge();
+        StepVerifier.create(stringFlux)
+                .expectNext("A", "B", "C","D")
+                .verifyComplete();
+    }
+
+    @Test
+    void explore_mergeSequential() {
+        Flux<String> stringFlux = fluxAndMonoGeneratorService.explore_mergeSequential();
+        StepVerifier.create(stringFlux)
+                .expectNext("A", "B", "C","D")
+                .verifyComplete();
+    }
 }

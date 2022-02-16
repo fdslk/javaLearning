@@ -17,6 +17,7 @@
       * 合并两个flux对象
     * concatWith
       * 静态方法合并两个flux
+    * merge
   * mono 常用操作
     * flatMap
       * asynchronously operator

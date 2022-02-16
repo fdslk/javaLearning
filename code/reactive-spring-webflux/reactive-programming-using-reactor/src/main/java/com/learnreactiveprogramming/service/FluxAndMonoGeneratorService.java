@@ -147,6 +147,23 @@ public class FluxAndMonoGeneratorService {
         return just.concatWith(just1);
     }
 
+    public Flux<String> explore_merge(){
+        Flux<String> stringFlux = Flux.just("A", "B")
+                .delayElements(Duration.ofMillis(100));
+        Flux<String> stringFlux1 = Flux.just("C", "D")
+                .delayElements(Duration.ofMillis(210));
+        return Flux.merge(stringFlux, stringFlux1).log();
+    }
+
+    public Flux<String> explore_mergeSequential(){
+        Flux<String> stringFlux = Flux.just("A", "B")
+                .delayElements(Duration.ofMillis(100));
+        Flux<String> stringFlux1 = Flux.just("C", "D")
+                .delayElements(Duration.ofMillis(10));
+        return Flux.mergeSequential(stringFlux, stringFlux1).log();
+    }
+
+    //TODO: https://stackoverflow.com/questions/67857350/project-reactor-what-are-differences-between-flux-concat-flux-mergesequential
     private Mono<io.vavr.collection.List<String>> splitStringMono(String s) {
         String[] split = s.split("");
         io.vavr.collection.List<String> of = io.vavr.collection.List.of(split);
