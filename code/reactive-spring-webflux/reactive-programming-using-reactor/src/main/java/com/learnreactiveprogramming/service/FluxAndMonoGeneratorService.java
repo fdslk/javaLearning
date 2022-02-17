@@ -163,13 +163,28 @@ public class FluxAndMonoGeneratorService {
         return Flux.mergeSequential(stringFlux, stringFlux1).log();
     }
 
+    public Mono<String> fluxOnErrorResume(int a, int b){
+        return divide(a, b)
+//                .onErrorResume(t -> stringUtil.onErrorResumeTestFunction().apply(t));
+                .onErrorResume(stringUtil.onErrorResumeTestFunction());
+//                .onErrorResume((throwable)->{
+//                    if(throwable instanceof ArithmeticException){
+//                        return Mono.just("1");
+//                    }
+//                    return Mono.just("0");
+//                });
+    }
+
+    public Mono<String> divide(int a, int b) {
+        return Mono.fromCallable(() -> String.valueOf(a / b));
+    }
+
     //TODO: https://stackoverflow.com/questions/67857350/project-reactor-what-are-differences-between-flux-concat-flux-mergesequential
     private Mono<io.vavr.collection.List<String>> splitStringMono(String s) {
         String[] split = s.split("");
         io.vavr.collection.List<String> of = io.vavr.collection.List.of(split);
         return Mono.just(of);
     }
-
 
     private Flux<String> splitName(String s) {
         String[] split = s.split("");

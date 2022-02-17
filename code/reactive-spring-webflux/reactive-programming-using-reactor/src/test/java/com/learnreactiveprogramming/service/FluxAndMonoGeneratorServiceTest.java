@@ -150,4 +150,13 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("A", "B", "C","D")
                 .verifyComplete();
     }
+
+    @Test
+    void fluxOnErrorResume() {
+        org.mockito.Mockito.when(stringUtilMock.onErrorResumeTestFunction()).thenReturn((t) -> Mono.just("1"));
+        Mono<String> stringFlux = fluxAndMonoGeneratorService.fluxOnErrorResume(1, 0);
+        StepVerifier.create(stringFlux.log())
+                .expectNext("1")
+                .verifyComplete();
+    }
 }
