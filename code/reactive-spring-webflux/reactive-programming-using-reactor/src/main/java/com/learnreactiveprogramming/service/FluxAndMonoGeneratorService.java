@@ -163,6 +163,14 @@ public class FluxAndMonoGeneratorService {
         return Flux.mergeSequential(stringFlux, stringFlux1).log();
     }
 
+    public Flux<String> explore_zip() {
+        Flux<String> stringFlux = Flux.just("A", "B");
+        Flux<String> stringFlux1 = Flux.just("C", "D");
+//        return Flux.zip(stringFlux, stringFlux1, (first, second) -> first + second);
+        return Flux.zip(stringFlux, stringFlux1)
+                .map(t2 -> t2.getT1() + t2.getT2());//zip return tuple, therefore, we can use tuple operator like getT1, getT2;
+    }
+
     public Mono<String> fluxOnErrorResume(int a, int b){
         return divide(a, b)
 //                .onErrorResume(t -> stringUtil.onErrorResumeTestFunction().apply(t));

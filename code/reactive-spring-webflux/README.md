@@ -18,6 +18,9 @@
     * concatWith
       * 静态方法合并两个flux
     * merge
+    * zip
+      * 最大操作8个元素，Tuple8
+    * zipWith
   * mono 常用操作
     * flatMap
       * asynchronously operator
@@ -27,3 +30,4 @@
       * 将两个对象合并成flux对象
     * fromCallable
       * 调用函数
+    * zipWith

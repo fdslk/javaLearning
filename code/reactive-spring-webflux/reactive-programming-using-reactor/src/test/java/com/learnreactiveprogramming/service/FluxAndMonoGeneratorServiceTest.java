@@ -159,4 +159,13 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("1")
                 .verifyComplete();
     }
+
+    @Test
+    void explore_zip() {
+        Flux<String> stringFlux = fluxAndMonoGeneratorService.explore_zip();
+        StepVerifier.create(stringFlux)
+                .expectNext("AC", "BD")
+                .verifyComplete();
+
+    }
 }
