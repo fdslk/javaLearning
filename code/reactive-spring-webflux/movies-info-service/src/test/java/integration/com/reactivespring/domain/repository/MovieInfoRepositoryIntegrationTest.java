@@ -1,7 +1,6 @@
 package com.reactivespring.domain.repository;
 
 import com.reactivespring.domain.MovieInfo;
-import com.sun.tools.javac.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,10 +13,11 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-//@EnableMongoRepositories(basePackageClasses = {MovieInfoRepository.class})
 @DataMongoTest//scan the mongodb related class and add into spring bean
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 @ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
 class MovieInfoRepositoryIntegrationTest {
     @Autowired
@@ -25,8 +25,12 @@ class MovieInfoRepositoryIntegrationTest {
 
     @BeforeEach
     void setUp(){
-        List<MovieInfo> of = List.of(new MovieInfo(null, "BatMan Begins", 2005,
-                List.of("Christian Bale", "Michael Cane"), LocalDate.parse("2005-06-15")));
+        List<MovieInfo> of = new ArrayList<>();
+        ArrayList<String> movieCast = new ArrayList<>();
+        movieCast.add("Christian Bale");
+        movieCast.add("Michael Cane");
+        of.add(new MovieInfo(null, "BatMan Begins", 2005,
+               movieCast, LocalDate.parse("2005-06-15")));
         movieInfoRepository.saveAll(of)
                 .blockLast();
     }
