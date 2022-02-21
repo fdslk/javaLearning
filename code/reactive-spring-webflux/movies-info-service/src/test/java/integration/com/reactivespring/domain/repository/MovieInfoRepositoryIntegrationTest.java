@@ -10,11 +10,14 @@ import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoCo
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataMongoTest//scan the mongodb related class and add into spring bean
 @ActiveProfiles("test")
@@ -31,6 +34,8 @@ class MovieInfoRepositoryIntegrationTest {
         movieCast.add("Michael Cane");
         of.add(new MovieInfo(null, "BatMan Begins", 2005,
                movieCast, LocalDate.parse("2005-06-15")));
+        of.add(new MovieInfo("abc", "BatMan second", 2005,
+                movieCast, LocalDate.parse("2005-06-15")));
         movieInfoRepository.saveAll(of)
                 .blockLast();
     }
@@ -45,6 +50,28 @@ class MovieInfoRepositoryIntegrationTest {
         Flux<MovieInfo> movieInfoFlux = movieInfoRepository.findAll().log();
 
         StepVerifier.create(movieInfoFlux)
+                .expectNextCount(2)
+                .verifyComplete();
+    }
+
+    @Test
+    void findById(){
+        Mono<MovieInfo> abc = movieInfoRepository.findById("abc").log();
+
+        StepVerifier.create(abc)
+                .assertNext(movieInfo -> {
+                    assertEquals("BatMan Begins", movieInfo.getName());
+                })
+                .verifyComplete();
+    }
+
+    @Test
+    void deleteMovieInfo(){
+
+        movieInfoRepository.deleteById("abc").block();
+        Flux<MovieInfo> log = movieInfoRepository.findAll().log();
+
+        StepVerifier.create(log)
                 .expectNextCount(1)
                 .verifyComplete();
     }
