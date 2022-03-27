@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "timeout.test",
+    "type": "java.lang.String",
+    "description": "A description for 'timeout.test'"
+  },
+  {
+    "name": "timeout.production",
+    "type": "java.lang.String",
+    "description": "A description for 'timeout.production'"
+  },
+  {
+    "name": "timeout.staging",
+    "type": "java.lang.String",
+    "description": "A description for 'timeout.staging'"
+  }
+]}
