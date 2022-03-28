@@ -32,10 +32,19 @@
     ```
   * 不是加到了这个文件中，就会都能够正常使用，只是spring boot在启动的时候，会将这些类（以及相关的beans）加载到java bean中
   * 这些被引用的类，就可以被开箱即用
-* 
+* 从application.property中装载自定的属性
+  * 使用注解**ConfigurationProperties(prefix = "timeout")**，关联java类中的属性和application中的关系
+  * 使用注解**Configuration**定义java bean类型
+  * 创建MATE-INF文件夹，并在创建**additional-spring-configuration-metadata.json**文件定义需要自动装载的property的名字
+* 如何自定一个starter
+  * 定义自动配置的模块
+  * 将需要自动化加载的类添加在configuration文件中，并加上注解**ConditionalOnClass**
+  * pom文件中添加**spring-boot-autoconfigure**
+  * start命名规则
+    * 不能以**spring boot**开头
+    * 以**name-spring-boot-starter**的格式来命名
 
-## 怎么配置slf4j的日志格式
-
+## 如何配置slf4j的日志格式
 * 引入**spring-boot-starter-log4j2**的pom依赖
 * 排除其他引入了logger的started，运行命令 ```mvn dependency:tree```检查引入logger的dependency
 * 如果遇到问题，可能需要删除对应的external library，然后再用reload pom依赖
