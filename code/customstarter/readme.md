@@ -40,6 +40,7 @@
   * 定义自动配置的模块
   * 将需要自动化加载的类添加在configuration文件中，并加上注解**ConditionalOnClass**
   * pom文件中添加**spring-boot-autoconfigure**
+  * 在srping.factories中加上对应的configuration
   * start命名规则
     * 不能以**spring boot**开头
     * 以**name-spring-boot-starter**的格式来命名
