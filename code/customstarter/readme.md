@@ -11,10 +11,10 @@
     * 使用注解**AutoConfiguration**或者 **SpringBootApplication**在项目中加上，就可以使用auto-configuration的特性
     * 在pom文件中加入
     * &lt; dependency &gt;
-            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-boot-configuration-processor&lt;/artifactId&gt;
-            &lt;optional&gt;true&lt;/optional&gt;
-        &lt;/dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-configuration-processor&lt;/artifactId&gt;
+      &lt;optional&gt;true&lt;/optional&gt;
+      &lt;/dependency&gt;
       * [Cannot Resolve Spring Boot Configuration Properties Error](https://www.baeldung.com/intellij-resolve-spring-boot-configuration-properties)
       * 加入了上述依赖之后，没有重新构建的时候都会在target/classes/创建'META-INF/'
 
@@ -44,6 +44,7 @@
   * start命名规则
     * 不能以**spring boot**开头
     * 以**name-spring-boot-starter**的格式来命名
+  * 自定中的starter不能在pom文件中添加其他的starter
 
 ## 如何配置slf4j的日志格式
 * 引入**spring-boot-starter-log4j2**的pom依赖
