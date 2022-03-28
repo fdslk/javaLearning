@@ -19,3 +19,24 @@
       * 加入了上述依赖之后，没有重新构建的时候都会在target/classes/创建'META-INF/'
 
 ## 什么是spring starter
+* starter可以在spring boot启动的时候把一些开源的资源文件或者一些配置文件提前加载到java bean中，这样就可以避免一些依赖的重复引入
+* auto configuration class
+  * 在resource/META-INF文件目录下，创建一个文件**spring.factories**，当spring boot启动的时候，加载spring.factories中的包含的对象
+    ``` 
+    # Auto Configure
+    org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration,\
+    org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration,\
+    org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration,\
+    org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+    ```
+  * 不是加到了这个文件中，就会都能够正常使用，只是spring boot在启动的时候，会将这些类（以及相关的beans）加载到java bean中
+  * 这些被引用的类，就可以被开箱即用
+* 
+
+## 怎么配置slf4j的日志格式
+
+* 引入**spring-boot-starter-log4j2**的pom依赖
+* 排除其他引入了logger的started，运行命令 ```mvn dependency:tree```检查引入logger的dependency
+* 如果遇到问题，可能需要删除对应的external library，然后再用reload pom依赖
+* 加入log4j2.xml在resource目录下
