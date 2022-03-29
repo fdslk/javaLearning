@@ -45,6 +45,12 @@
     * 不能以**spring boot**开头
     * 以**name-spring-boot-starter**的格式来命名
   * 自定中的starter不能在pom文件中添加其他的starter
+### 如何使用custom starter
+* 运行```mvn package```生成jar
+* 导入jar
+  * ```mvn install:install-file```
+  * 将jar复制到当前目录下，pom引用时，加入**system**的标签，读取本地的jar
+
 
 ## 如何配置slf4j的日志格式
 * 引入**spring-boot-starter-log4j2**的pom依赖
