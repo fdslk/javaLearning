@@ -26,3 +26,5 @@
 * how to use jwt token
   * the framework of jwt usage
   ![sequence diagram of jwt usage](./jwt-seq-diagram.png)
+  * code implementation
+  ![how to implement](https://user-images.githubusercontent.com/6279298/163708514-6dc26c53-0fab-4b0e-8052-f71224ec23a9.png)
