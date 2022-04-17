@@ -1,0 +1,10 @@
+@startuml
+client -> server: Authentication Request (with username&password)
+server -> requestHandler: validate (with username&password)
+requestHandler -> server: generate token and return
+server --> client: Authentication token
+client -> server: call endpoint /hello with jwt token
+server -> requestHandler: validate authorization token
+requestHandler -> server: authorization successfully
+server -> client: return response
+@enduml
