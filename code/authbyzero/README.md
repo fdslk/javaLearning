@@ -23,7 +23,13 @@ which can cut the unnecessary cost.
   --data client_secret=YOUR_CLIENT_SECRET \
   --data audience=YOUR_API_IDENTIFIER
   ```
-* Adding spring-boot dependency in your application  
+* Adding spring-boot dependency in your application
+  * add Oauth2 maven dependency
+  * setup OAuth2 configuration
+    * set up the audience
+    * set up the issuer-url
+  * add validator implements the OAuth2TokenValidator
+  * configure api permission
 
 ## Tips:
 * If this occurs to you:
