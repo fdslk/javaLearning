@@ -1,0 +1,10 @@
+# build stage
+FROM maven:3.5-jdk-8 AS build
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -f /home/app/pom.xml clean package
+# package stage
+FROM gcr.io/distroless/java
+COPY --from=build /home/app/target/authbyzero-0.0.1-SNAPSHOT.jar /home/app/authbyzero-0.0.1-SNAPSHOT.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/home/app/authbyzero-0.0.1-SNAPSHOT.jar"]
