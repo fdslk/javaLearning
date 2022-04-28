@@ -15,6 +15,7 @@
   * [reactive-spring-webflux](https://github.com/Fdslk/javaLearning/tree/master/code/reactive-spring-webflux)
   * [retactor handler](https://github.com/Fdslk/javaLearning/tree/master/code/reactiveWebApplication)
   * [jwt in spring-boot](https://github.com/Fdslk/javaLearning/tree/master/code/spring-boot-jwt)
+  * [OAuth2 in spring-boot](https://github.com/Fdslk/javaLearning/tree/master/code/authbyzero)
 * java 测试
   * TestNg
     * [http interface 测试](https://github.com/Fdslk/javaLearning/blob/master/code/httpinterfacetest/src/test/java/com/fang/GetMobilePhoneTest.java)
