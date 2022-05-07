@@ -32,3 +32,8 @@
       ```
   * add ```NewRelicMetricsExportAutoConfiguration``` as a java been to auto detect interface
     * For example, adding apikey, application service name. etc. By Override existed methods.
+* Way four using dockerfile to access new relic agent
+  * add new Dockerfile
+  * copy code src, pom, newrelic agent into docker images
+  * ```docker build -t local/newrelicjava .```
+  * ```docker run -it -p 8080:8080 local/newrelicjava```
