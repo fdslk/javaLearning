@@ -15,5 +15,20 @@
       ![metrics charts](https://user-images.githubusercontent.com/96409339/166887000-12aa2119-ed36-409c-a4d0-293935025627.png)
     * logs contents
       ![logs contents](https://user-images.githubusercontent.com/96409339/166887340-305a0dd5-4ca7-49f7-bd49-cbdd93c2a594.png)
-
-  
+* Way two using newRelic agent locally
+  * using intellig idea jvm, add newrelic.jar path to jvm option
+  * open Edit Configuration -> 
+  ![add agent path to jvm option](https://user-images.githubusercontent.com/6279298/167244182-60e5ec52-6162-48e2-bb6f-18160ab409aa.png)
+  * click debug/run
+  * console will 
+* Way three using maven dependency
+  * add maven dependency
+    * ```xml
+      <dependency>
+          <groupId>com.newrelic.telemetry</groupId>
+          <artifactId>micrometer-registry-new-relic</artifactId>
+          <version>0.8.0</version>
+      </dependency>
+      ```
+  * add ```NewRelicMetricsExportAutoConfiguration``` as a java been to auto detect interface
+    * For example, adding apikey, application service name. etc. By Override existed methods.
