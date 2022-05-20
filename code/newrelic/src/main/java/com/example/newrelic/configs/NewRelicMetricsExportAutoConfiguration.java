@@ -23,10 +23,10 @@ import java.time.Duration;
         CompositeMeterRegistryAutoConfiguration.class,
         SimpleMetricsExportAutoConfiguration.class
 })
-@AutoConfigureAfter(MetricsAutoConfiguration.class)
-@ConditionalOnClass(NewRelicRegistry.class)
+// @AutoConfigureAfter(MetricsAutoConfiguration.class)
+// @ConditionalOnClass(NewRelicRegistry.class)
 public class NewRelicMetricsExportAutoConfiguration {
-    @Bean
+    // @Bean
     public NewRelicRegistryConfig newRelicConfig(){
         return new NewRelicRegistryConfig() {
             @Override
@@ -48,7 +48,7 @@ public class NewRelicMetricsExportAutoConfiguration {
         };
     }
 
-    @Bean
+    // @Bean
     public NewRelicRegistry newRelicRegistryConfig(NewRelicRegistryConfig newRelicRegistryConfig) throws UnknownHostException {
         NewRelicRegistry newRelicRegistry =
                 NewRelicRegistry.builder(newRelicRegistryConfig)
