@@ -4,6 +4,7 @@
   * [如何引用本地jar](https://github.com/Fdslk/javaLearning/tree/master/code/consumer)
   * [如何定义xxx-spring-boot-starter](https://github.com/Fdslk/javaLearning/tree/master/code/customstarter)
   * [spring-boot core feature 练习](https://github.com/Fdslk/javaLearning/tree/master/code/demo/)
+  * [java optional && option](https://github.com/Fdslk/javaLearning/tree/master/code/option_optional_practice)
   * dubbo相关demo
     * [customer](https://github.com/Fdslk/javaLearning/tree/master/code/dubbo-consumer)
     * [provider](https://github.com/Fdslk/javaLearning/tree/master/code/dubbo-provider)
