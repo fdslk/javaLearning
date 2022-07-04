@@ -20,6 +20,18 @@
 * serialize
   * with Jackson to treat an empty Optional as null, and to treat a present Optional as a field representing its value.
 ## option in vavr
+* option is used to eliminate nullable check, which can make our code more safe
+* you can add the following dependency for using option vavr
+```
+<dependency>
+    <groupId>io.vavr</groupId>
+    <artifactId>vavr</artifactId>
+    <version>0.9.0</version>
+</dependency>
+```
+* create option
+  * ```Option.of```, then we can use getOrElse to get actual value or set a default value for returning
+  * 
 
 ## optional VS option
 
