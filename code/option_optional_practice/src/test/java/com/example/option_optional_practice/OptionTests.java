@@ -1,19 +1,17 @@
 package com.example.option_optional_practice;
 
-import com.example.option_optional_practice.validataion.Person;
 import com.example.option_optional_practice.validataion.PersonValidator;
 import io.vavr.Function0;
 import io.vavr.Tuple;
 import io.vavr.Tuple3;
-import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
-import io.vavr.control.Validation;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static io.vavr.API.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -75,5 +73,17 @@ public class OptionTests {
         PersonValidator personValidator = new PersonValidator();
         assertThat(personValidator.validationPerson("Json", 30).toString()).isEqualTo("Valid(Person(name=Json, age=30))");
         Option<String> when = Option.when(true, "");
+    }
+
+    @Test
+    void shouldReturnCorrectValueWhenMatchRelatedCases() {
+        int input = 2;
+        String output = Match(input).of(
+                Case($(1), "one"),
+                Case($(2), "two"),
+                Case($(3), "three"),
+                Case($(), "?"));
+
+        assertThat(output).isEqualTo("two");
     }
 }

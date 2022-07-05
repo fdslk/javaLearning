@@ -47,6 +47,12 @@
   * valid
   * invalid
   * ap
+* Match Pattern
+  ```java
+  Match(input).of(
+  Case(...
+  ))
+   ```
 
 ## optional VS option
 
