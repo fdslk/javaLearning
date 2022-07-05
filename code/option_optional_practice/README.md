@@ -31,7 +31,22 @@
 ```
 * create option
   * ```Option.of```, then we can use getOrElse to get actual value or set a default value for returning
-  * 
+* Tuple
+* Try
+  * replace try-catch block
+  * if it is failure, can use ```getOrElse```
+  * if dev wants to throw exception, can use getOrElseThrow
+* function Interface
+  * Function
+  * BiFunction
+  * Function[num]
+* collections
+  * include list, array, set, map, etc.
+* validation
+  * combine
+  * valid
+  * invalid
+  * ap
 
 ## optional VS option
 
