@@ -1,0 +1,77 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /hello:
+    get:
+      tags:
+      - hello-controller
+      operationId: hello
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /book/{bookName}:
+    get:
+      tags:
+      - book-controller
+      summary: Get a book by its name
+      operationId: getBookByName
+      parameters:
+      - name: bookName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Book'
+  /book/filter:
+    get:
+      tags:
+      - book-controller
+      summary: Get book list by price range
+      operationId: filterBooks
+      parameters:
+      - name: minPrice
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: maxPrice
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: integer
+          format: int32
+        author:
+          type: string
