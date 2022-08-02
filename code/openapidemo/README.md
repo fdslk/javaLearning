@@ -44,3 +44,14 @@
     then the openapi.yaml will be created in your ***./target*** directory
     
 ## open-api validation for controller contract
+* swagger-request-validator-restassured to create integration test
+* add dependency
+  ```
+  <dependency>
+	    <groupId>com.atlassian.oai</groupId>
+		<artifactId>swagger-request-validator-restassured</artifactId>
+		<version>${swagger-request-validator.version}</version>
+		<scope>test</scope>
+  </dependency>
+  ```
+  * using the above command to generate yaml file
