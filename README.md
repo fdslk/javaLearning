@@ -25,3 +25,4 @@
     * [mock test](https://github.com/Fdslk/javaLearning/tree/master/code/mocktest)
     * [rpc interface 测试](https://github.com/Fdslk/javaLearning/tree/master/code/rpcinterface)
     * [jenkins local test](https://github.com/Fdslk/javaLearning/tree/master/code/testDemo)
+    * [rest-assured integration test](https://github.com/Fdslk/javaLearning/tree/master/code/openapidemo)

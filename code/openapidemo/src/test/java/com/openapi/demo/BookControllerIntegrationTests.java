@@ -1,6 +1,5 @@
 package com.openapi.demo;
 
-import com.atlassian.oai.validator.restassured.OpenApiValidationFilter;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.when;
