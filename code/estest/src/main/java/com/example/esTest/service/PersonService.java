@@ -8,4 +8,6 @@ public interface PersonService {
     boolean index(Person person);
 
     List<Person> findByName(String name);
+
+    Person findPersonByName(String name);
 }

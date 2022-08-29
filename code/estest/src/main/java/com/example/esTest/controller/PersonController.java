@@ -25,6 +25,7 @@ public class PersonController {
 
     @GetMapping
     public Person queryPersonByName(@RequestParam String name) {
-        return personService.findByName(name).stream().findFirst().orElseGet(() -> new Person("default", 18, "1234", "worker"));
+//        return personService.findByName(name).stream().findFirst().orElseGet(() -> new Person("default", 18, "1234", "worker"));
+        return personService.findPersonByName(name);
     }
 }

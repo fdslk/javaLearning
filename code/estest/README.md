@@ -26,6 +26,9 @@
   ```
   * query methods
     * repository
+      * autoWire ```ElasticsearchRestTemplate```
+      * add ```NativeSearchQueryBuilder```
+      * 
     * ElasticSearchRestTemplate
       * add new interface to implement ```ElasticsearchRepository```
       * add new index method to insert data into es, **tip:** search key-word should be included in the searched object
