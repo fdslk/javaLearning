@@ -2,6 +2,10 @@ package com.example.esTest.service;
 
 import com.example.esTest.controller.model.Person;
 
-public interface ElasticSearchService {
+import java.util.List;
+
+public interface PersonService {
     boolean index(Person person);
+
+    List<Person> findByName(String name);
 }

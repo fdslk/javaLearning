@@ -9,9 +9,10 @@
     * shortcoming
 * How to run local elastic search
   * run docker cmd 
-  ```docker run -p 9200:9200 \
+  ```
+    docker run -p 9200:9200 \
     -e "discovery.type=single-node" \
-    docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    docker.elastic.co/elasticsearch/elasticsearch:7.8.0
   ```
   * check es healthy status ``` http://localhost:9200 ```
 * How to integrate ES in spring boot project
@@ -26,6 +27,10 @@
   * query methods
     * repository
     * ElasticSearchRestTemplate
+      * add new interface to implement ```ElasticsearchRepository```
+      * add new index method to insert data into es, **tip:** search key-word should be included in the searched object
+      * add **ES** configuration class, add a java bean to instantiate an ```ElasticsearchRestTemplate```
+      * add ```Document``` annotation in operating object, which can wrapped the wanted mapping object
 * How to mock ES in spring boot integration test
   * using elasticsearch-cluster-runner
   * using embedded elastic-search

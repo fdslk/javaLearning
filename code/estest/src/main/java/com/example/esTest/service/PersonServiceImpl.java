@@ -5,8 +5,10 @@ import com.example.esTest.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class ElasticSearchServiceImpl implements ElasticSearchService{
+public class PersonServiceImpl implements PersonService {
     @Autowired
     private PersonRepository personRepository;
     @Override
@@ -15,5 +17,10 @@ public class ElasticSearchServiceImpl implements ElasticSearchService{
         if (null != save.getId())
             return true;
         return false;
+    }
+
+    @Override
+    public List<Person> findByName(String name) {
+        return personRepository.findByName(name);
     }
 }
