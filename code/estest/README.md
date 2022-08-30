@@ -33,6 +33,8 @@
       * add new interface to implement ```ElasticsearchRepository```
       * add new index method to insert data into es, **tip:** search key-word should be included in the searched object
       * add ```Document``` annotation in operating object, which can wrapped the wanted mapping object
+    * high-level REST client
+      * 
 * How to mock ES in spring boot integration test
   * using docker to set up a real elastic search
   * using embedded elastic-search
