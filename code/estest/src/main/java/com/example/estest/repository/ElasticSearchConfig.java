@@ -1,4 +1,4 @@
-package com.example.esTest.repository;
+package com.example.estest.repository;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;

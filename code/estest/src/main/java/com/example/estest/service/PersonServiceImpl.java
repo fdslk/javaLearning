@@ -1,12 +1,11 @@
-package com.example.esTest.service;
+package com.example.estest.service;
 
-import com.example.esTest.controller.model.Person;
-import com.example.esTest.repository.PersonRepository;
+import com.example.estest.controller.model.Person;
+import com.example.estest.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
-@Service
+@Service("PersonService")
 public class PersonServiceImpl implements PersonService {
     @Autowired
     private PersonRepository personRepository;
@@ -25,9 +24,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public boolean index(Person person) {
         Person save = personRepository.save(person);
-        if (null != save.getId())
-            return true;
-        return false;
+        return null != save.getId();
     }
 
     @Override

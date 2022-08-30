@@ -27,12 +27,11 @@
   * query methods
     * repository
       * autoWire ```ElasticsearchRestTemplate```
-      * add ```NativeSearchQueryBuilder```
-      * 
+      * add ```NativeSearchQueryBuilder``` to build query conditions
+      * add **ES** configuration class, add a java bean to instantiate an ```ElasticsearchRestTemplate```
     * ElasticSearchRestTemplate
       * add new interface to implement ```ElasticsearchRepository```
       * add new index method to insert data into es, **tip:** search key-word should be included in the searched object
-      * add **ES** configuration class, add a java bean to instantiate an ```ElasticsearchRestTemplate```
       * add ```Document``` annotation in operating object, which can wrapped the wanted mapping object
 * How to mock ES in spring boot integration test
   * using elasticsearch-cluster-runner

@@ -1,6 +1,6 @@
-package com.example.esTest.repository;
+package com.example.estest.repository;
 
-import com.example.esTest.controller.model.Person;
+import com.example.estest.controller.model.Person;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;

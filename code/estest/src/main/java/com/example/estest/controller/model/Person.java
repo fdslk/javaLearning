@@ -1,11 +1,9 @@
-package com.example.esTest.controller.model;
+package com.example.estest.controller.model;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-@RequiredArgsConstructor
 @Data
 @Document(indexName = "person")
 public class Person {
@@ -14,4 +12,11 @@ public class Person {
     @Id
     private final String id;
     private final String job;
+
+    public Person(final String name, final Integer age, final String id, final String job) {
+        this.name = name;
+        this.age = age;
+        this.id = id;
+        this.job = job;
+    }
 }

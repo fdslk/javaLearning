@@ -1,13 +1,10 @@
-package com.example.esTest.controller;
+package com.example.estest.controller;
 
-import com.example.esTest.controller.model.Person;
-import com.example.esTest.service.PersonService;
-import org.apache.commons.lang3.StringUtils;
+import com.example.estest.controller.model.Person;
+import com.example.estest.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/person")
