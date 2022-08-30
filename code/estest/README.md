@@ -34,5 +34,5 @@
       * add new index method to insert data into es, **tip:** search key-word should be included in the searched object
       * add ```Document``` annotation in operating object, which can wrapped the wanted mapping object
 * How to mock ES in spring boot integration test
-  * using elasticsearch-cluster-runner
+  * using docker to set up a real elastic search
   * using embedded elastic-search
