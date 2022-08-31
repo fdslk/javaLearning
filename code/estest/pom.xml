@@ -41,11 +41,6 @@
 			<version>7.17.6</version>
 		</dependency>
 		<dependency>
-			<groupId>org.elasticsearch</groupId>
-			<artifactId>elasticsearch</artifactId>
-			<version>7.17.6</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -54,6 +49,12 @@
 			<groupId>org.codelibs</groupId>
 			<artifactId>elasticsearch-cluster-runner</artifactId>
 			<version>7.10.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codelibs.elasticsearch.module</groupId>
+			<artifactId>analysis-common</artifactId>
+			<version>7.10.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -72,22 +73,22 @@
 		</plugins>
 	</build>
 
-<!--	<repositories>-->
-<!--		<repository>-->
-<!--			<id>central</id>-->
-<!--			<url>https://repo1.maven.org/maven2</url>-->
-<!--			<releases>-->
-<!--				<enabled>true</enabled>-->
-<!--			</releases>-->
-<!--			<snapshots>-->
-<!--				<enabled>true</enabled>-->
-<!--			</snapshots>-->
-<!--		</repository>-->
-<!--		<repository>-->
-<!--			<id>codelibs.org</id>-->
-<!--			<name>CodeLibs Repository</name>-->
-<!--			<url>https://maven.codelibs.org/</url>-->
-<!--		</repository>-->
-<!--	</repositories>-->
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>https://repo1.maven.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>codelibs.org</id>
+			<name>CodeLibs Repository</name>
+			<url>https://maven.codelibs.org/</url>
+		</repository>
+	</repositories>
 
 </project>

@@ -46,6 +46,10 @@
         -e "discovery.type=single-node" \
         docker.elastic.co/elasticsearch/elasticsearch:7.8.0
         ```
-      * 
+      * instantiate `RestHighLevelClient` by annotation `@BeforeAll`
+      * set up `restTemplate`
+      * functional test class extends `BaseTestClass`
+      * write test in the specific test class and make assertions
   * using embedded elastic-search
   * using stub to mock elastic search server
+  * using ESIntegTestCase
