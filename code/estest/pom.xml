@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
 			<artifactId>elasticsearch-rest-high-level-client</artifactId>
-			<version>7.17.6</version>
+			<version>6.6.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -53,13 +53,13 @@
 		<dependency>
 			<groupId>org.codelibs</groupId>
 			<artifactId>elasticsearch-cluster-runner</artifactId>
-			<version>7.10.2.0</version>
+			<version>6.6.0.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.codelibs.elasticsearch.module</groupId>
 			<artifactId>analysis-common</artifactId>
-			<version>7.10.2</version>
+			<version>6.6.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

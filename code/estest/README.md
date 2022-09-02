@@ -43,7 +43,7 @@
         </dependency>
         ```
       * initialize rest high level client
-      * 
+      * use IndexRequest to build saving data
     * migrate `HLRC` to `co.elastic.clients`
     * Tips:
       * Actually, if you don't set up configurations for connecting es, like port number, ```ElasticsearchRestTemplate``` has provided the DEFAULT value **9200**
@@ -61,6 +61,6 @@
       * set up `restTemplate`
       * functional test class extends `BaseTestClass`
       * write test in the specific test class and make assertions
-  * using embedded elastic-search
+  * using embedded elastic-search, 
   * using stub to mock elastic search server
   * using ESIntegTestCase

@@ -1,12 +1,14 @@
 package com.example.estest;
 
-import junit.framework.TestCase;
+import lombok.extern.slf4j.Slf4j;
 import org.codelibs.elasticsearch.runner.ElasticsearchClusterRunner;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.indices.CreateIndexRequest;
-import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.xcontent.XContentType;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -14,7 +16,9 @@ import java.io.IOException;
 import static org.codelibs.elasticsearch.runner.ElasticsearchClusterRunner.newConfigs;
 import static org.elasticsearch.client.RequestOptions.DEFAULT;
 
-public class BaseIntegrationTest extends TestCase {
+@Slf4j
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class BaseIntegrationTest extends BaseTest {
     protected static final ElasticsearchClusterRunner clusterRunner = clusterRunner();
 
     @Autowired
@@ -35,14 +39,18 @@ public class BaseIntegrationTest extends TestCase {
         return elasticsearchClusterRunner;
     }
 
-    @Before
+    @BeforeAll
     public void setUp() throws Exception{
+        log.info("cluster runner starting");
         createEsIndex();
     }
 
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @AfterAll
+    public void tearDown() throws IOException {
+        log.info("cluster runner decommission");
+        clusterRunner.deleteIndex("person");
+        clusterRunner.clean();
+        clusterRunner.close();
     }
 
     protected void createEsIndex() throws IOException {
