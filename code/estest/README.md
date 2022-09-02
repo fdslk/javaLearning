@@ -34,6 +34,17 @@
       * add new index method to insert data into es, **tip:** search key-word should be included in the searched object
       * add ```Document``` annotation in operating object, which can wrapped the wanted mapping object
     * high-level REST client
+      * add pom dependency
+        ```
+        <dependency>
+          <groupId>org.elasticsearch.client</groupId>
+          <artifactId>elasticsearch-rest-high-level-client</artifactId>
+          <version>7.17.6</version>
+        </dependency>
+        ```
+      * initialize rest high level client
+      * 
+    * migrate `HLRC` to `co.elastic.clients`
     * Tips:
       * Actually, if you don't set up configurations for connecting es, like port number, ```ElasticsearchRestTemplate``` has provided the DEFAULT value **9200**
 * How to mock ES in spring boot integration test
