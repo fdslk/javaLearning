@@ -5,7 +5,9 @@ import org.codelibs.elasticsearch.runner.ElasticsearchClusterRunner;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.xcontent.XContentType;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -28,10 +30,15 @@ public class BaseIntegrationTest extends BaseTest {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
         ElasticsearchClusterRunner elasticsearchClusterRunner = new ElasticsearchClusterRunner();
         //create ES node
-        elasticsearchClusterRunner.onBuild((number, settingsBuilder) -> {})
+        elasticsearchClusterRunner.onBuild((number, settingsBuilder) -> {
+                    settingsBuilder.put("http.cors.enabled", true);
+                    settingsBuilder.put("http.cors.allow-origin", "*");
+                    settingsBuilder.put("discovery.type", "single-node");
+                })
                 .build(newConfigs()
                         .basePath("./target/es")
                         .numOfNode(1)
+                        .baseHttpPort(9200)
                         .disableESLogger());
         // wait for yellow status
 
@@ -39,13 +46,13 @@ public class BaseIntegrationTest extends BaseTest {
         return elasticsearchClusterRunner;
     }
 
-    @BeforeAll
+    @Before
     public void setUp() throws Exception{
         log.info("cluster runner starting");
         createEsIndex();
     }
 
-    @AfterAll
+    @After
     public void tearDown() throws IOException {
         log.info("cluster runner decommission");
         clusterRunner.deleteIndex("person");
@@ -55,7 +62,6 @@ public class BaseIntegrationTest extends BaseTest {
 
     protected void createEsIndex() throws IOException {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest("person");
-        createIndexRequest.source("catalogue/search_index_mapping.json", XContentType.JSON);
         CreateIndexResponse createIndexResponse = restHighLevelClient.indices().create(createIndexRequest, DEFAULT);
         if(createIndexResponse.isAcknowledged()){
             System.out.println("successfully");
