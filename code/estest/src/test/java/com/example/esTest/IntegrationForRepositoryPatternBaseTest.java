@@ -4,15 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.xcontent.XContentType;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.data.elasticsearch.client.ClientConfiguration;
-import org.springframework.data.elasticsearch.client.RestClients;
+//import org.springframework.data.elasticsearch.client.ClientConfiguration;
+//import org.springframework.data.elasticsearch.client.RestClients;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -46,11 +46,11 @@ public class IntegrationForRepositoryPatternBaseTest {
 
     @BeforeAll
     public void setUp() {
-        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo("localhost:9200")
-                .build();
-        client = RestClients.create(clientConfiguration)
-                .rest();
+//        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+//                .connectedTo("localhost:9200")
+//                .build();
+//        client = RestClients.create(clientConfiguration)
+//                .rest();
     }
 
     protected void indexData() throws IOException {

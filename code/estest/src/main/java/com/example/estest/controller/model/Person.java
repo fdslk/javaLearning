@@ -1,15 +1,15 @@
 package com.example.estest.controller.model;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+//import org.springframework.data.annotation.Id;
+//import org.springframework.data.elasticsearch.annotations.Document;
 
 @Data
-@Document(indexName = "person")
+//@Document(indexName = "person")
 public class Person {
     private final String name;
     private final Integer age;
-    @Id
+//    @Id
     private final String id;
     private final String job;
 
