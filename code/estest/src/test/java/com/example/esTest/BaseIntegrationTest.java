@@ -1,16 +1,22 @@
 package com.example.estest;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpHost;
 import org.codelibs.elasticsearch.runner.ElasticsearchClusterRunner;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.junit.After;
-import org.junit.Before;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.codelibs.elasticsearch.runner.ElasticsearchClusterRunner.newConfigs;
 import static org.elasticsearch.client.RequestOptions.DEFAULT;
@@ -20,8 +26,7 @@ import static org.elasticsearch.client.RequestOptions.DEFAULT;
 public class BaseIntegrationTest extends BaseTest {
     protected static final ElasticsearchClusterRunner clusterRunner = clusterRunner();
 
-    @Autowired
-    protected RestHighLevelClient restHighLevelClient;
+    protected static final RestHighLevelClient restHighLevelClient = restHighLevelClient();
 
     public static ElasticsearchClusterRunner clusterRunner() {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
@@ -43,13 +48,19 @@ public class BaseIntegrationTest extends BaseTest {
         return elasticsearchClusterRunner;
     }
 
-    @Before
-    public void setUp() throws Exception{
+    @BeforeAll
+    public void setUp() {
         log.info("cluster runner starting");
-        createEsIndex();
+        indexData();
     }
 
-    @After
+    public static RestHighLevelClient restHighLevelClient() {
+        return new RestHighLevelClient(RestClient.builder(
+                new HttpHost("localhost", 9201, "http")
+        ));
+    }
+
+    @AfterAll
     public void tearDown() throws IOException {
         log.info("cluster runner decommission");
         clusterRunner.deleteIndex("person");
@@ -68,5 +79,22 @@ public class BaseIntegrationTest extends BaseTest {
             System.out.println("failed");
             System.exit(1);
         }
+    }
+
+    protected void indexData() {
+        String personJsonData = "{\"name\":\"Bill\",\"age\":10,\"id\":\"1\",\"job\": \"driver\"}";
+        String personJsonData2 = "{\"name\":\"Billy\",\"age\":10,\"id\":\"2\",\"job\": \"driver\"}";
+        List<String> personsJsonDataList = Arrays.asList(personJsonData, personJsonData2);
+        IndexRequest indexRequest = new IndexRequest("person", "doc");
+        personsJsonDataList.stream().forEach(personJson -> {
+            indexRequest.source(personJson, XContentType.JSON);
+            try {
+                restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+                log.info(String.format("index successfully, :%s", personJson));
+            } catch (IOException e) {
+                e.printStackTrace();
+                log.error(String.format("index failure: %s", personJson), e);
+            }
+        });
     }
 }

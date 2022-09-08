@@ -41,12 +41,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     public boolean indexWithRHLC(Person person) throws IOException {
-        IndexRequest request = new IndexRequest("person");
+        IndexRequest request = new IndexRequest("person", "doc");
         ObjectMapper objectMapper = new ObjectMapper();
         request.id("1");
         request.source(objectMapper.writeValueAsString(person), XContentType.JSON);
         IndexResponse indexResponse = client.restHighLevelClient().index(request, RequestOptions.DEFAULT);
-        if (indexResponse.status().equals(RestStatus.CREATED))
+        if (indexResponse.status().equals(RestStatus.OK))
             return true;
         return false;
     }
