@@ -96,5 +96,7 @@ public class BaseIntegrationTest extends BaseTest {
                 log.error(String.format("index failure: %s", personJson), e);
             }
         });
+
+        clusterRunner.refresh();
     }
 }

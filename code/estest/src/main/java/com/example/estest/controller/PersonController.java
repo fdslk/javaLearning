@@ -35,4 +35,9 @@ public class PersonController {
 //        return personService.findByName(name).stream().findFirst().orElseGet(() -> new Person("default", 18, "1234", "worker"));
         return personService.findPersonByName(name);
     }
+
+    @GetMapping("/rhlc")
+    public Person queryPersonByNameInRHLC(@RequestParam String name) throws IOException {
+        return personService.findPersonWithRHLC(name);
+    }
 }
