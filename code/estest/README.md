@@ -44,6 +44,23 @@
         ```
       * initialize rest high level client
       * use IndexRequest to build saving data
+        * types
+          * Json string directly, if you define an object at first, you can use `ObjectMapper` to execute mapper operation. 
+          * `Map` document definition then framework will convert it to `Json format`
+        * tips: If the id is fixed, the newly indexRequest will override the previous one.
+      * how to search data
+        * using `SearchRequest`, define index name, document type
+        * build `SearchSourceBuilder`, set query item. 
+        * set the source of searchRequest by SearchSourceBuilder
+        * using the following cmd to verify all data
+        ```kotlin
+        curl -X GET "localhost:9200/<your index>/_search?pretty" -H 'Content-Type: application/json' -d
+           '{
+             "query": {
+                "match_all": {}
+              }
+            }'
+        ```
     * migrate `HLRC` to `co.elastic.clients`
     * Tips:
       * Actually, if you don't set up configurations for connecting es, like port number, ```ElasticsearchRestTemplate``` has provided the DEFAULT value **9200**

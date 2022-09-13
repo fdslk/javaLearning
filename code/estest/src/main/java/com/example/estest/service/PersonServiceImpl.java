@@ -2,28 +2,21 @@ package com.example.estest.service;
 
 import com.example.estest.controller.model.Person;
 import com.example.estest.repository.ClientBeans;
-//import com.example.estest.repository.PersonRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-//import org.springframework.data.elasticsearch.core.SearchHits;
-//import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-//import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-//import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -37,6 +30,7 @@ public class PersonServiceImpl implements PersonService {
 //    private PersonRepository personRepository;
 //    @Autowired
 //    private ElasticsearchRestTemplate elasticsearchRestTemplate;
+    private final Log log = LogFactory.getLog("PersonService");
 
     @Autowired
     private ClientBeans client;
@@ -48,11 +42,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     public boolean indexWithRHLC(Person person) throws IOException {
-        IndexRequest request = new IndexRequest("person", "doc");
+        IndexRequest request = new IndexRequest("person", "doc", java.util.UUID.randomUUID().toString());
         ObjectMapper objectMapper = new ObjectMapper();
-        request.id("1");
         request.source(objectMapper.writeValueAsString(person), XContentType.JSON);
         IndexResponse indexResponse = client.restHighLevelClient().index(request, RequestOptions.DEFAULT);
+        log.info(indexResponse.getResult().toString());
         if (indexResponse.status().equals(RestStatus.OK))
             return true;
         return false;
@@ -61,23 +55,22 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person findPersonWithRHLC(String name) throws IOException {
         SearchRequest searchRequest = new SearchRequest("person");
-
-        QueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("name", name)
-                .fuzziness(Fuzziness.AUTO)
-                .prefixLength(3)
-                .maxExpansions(10);
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-        sourceBuilder.query(matchQueryBuilder);
+        sourceBuilder.query(QueryBuilders.termQuery("name", name));
+        sourceBuilder.from(0);
+        sourceBuilder.size(5);
         searchRequest.source(sourceBuilder);
-
         SearchResponse searchResponse = client.restHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+
         SearchHits hits = searchResponse.getHits();
 
         return Arrays.stream(hits.getHits()).findFirst().map(x -> {
             try {
+                log.info(x.getSourceAsString());
                 return new ObjectMapper().readValue(x.getSourceAsString(), Person.class);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
+                log.info(e.getOriginalMessage());
                 return null;
             }
         }).orElseGet(() -> new Person("default", 18, "1234", "worker"));
