@@ -78,6 +78,17 @@
       * set up `restTemplate`
       * functional test class extends `BaseTestClass`
       * write test in the specific test class and make assertions
-  * using embedded elastic-search, 
+  * using embedded elastic-search,
+    * add dependency
+    ```xml
+    <dependency>
+	    <groupId>org.codelibs</groupId>
+		   <artifactId>elasticsearch-cluster-runner</artifactId>
+		   <version>6.6.0.0</version>
+		   <scope>test</scope>
+    </dependency>
+    ```
+    * build default JVM ES cluster by defining a static `ElasticsearchClusterRunner`
+    * define default `RestHighLevelClient` and set port number as **9201**
   * using stub to mock elastic search server
   * using ESIntegTestCase

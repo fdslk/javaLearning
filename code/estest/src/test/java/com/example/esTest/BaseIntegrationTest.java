@@ -40,7 +40,6 @@ public class BaseIntegrationTest extends BaseTest {
                 .build(newConfigs()
                         .basePath("./target/es")
                         .numOfNode(1)
-                        .baseHttpPort(9200)
                         .disableESLogger());
         // wait for yellow status
 
