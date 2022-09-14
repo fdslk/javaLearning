@@ -4,6 +4,7 @@ import com.example.estest.controller.model.Person;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonService {
     boolean index(Person person);
@@ -13,4 +14,6 @@ public interface PersonService {
     Person findPersonByName(String name);
 
     Person findPersonWithRHLC(String name) throws IOException;
+
+    Optional<Person> findPersonWithRHLCAsync(String name) throws IOException;
 }

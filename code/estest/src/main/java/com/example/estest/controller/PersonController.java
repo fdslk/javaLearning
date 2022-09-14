@@ -40,4 +40,9 @@ public class PersonController {
     public Person queryPersonByNameInRHLC(@RequestParam String name) throws IOException {
         return personService.findPersonWithRHLC(name);
     }
+
+    @GetMapping("/async/rhlc")
+    public Person queryPersonByNameInRHLCAsync(@RequestParam String name) throws IOException {
+        return personService.findPersonWithRHLCAsync(name).get();
+    }
 }
