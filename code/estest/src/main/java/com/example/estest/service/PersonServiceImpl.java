@@ -13,6 +13,8 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.common.io.stream.BytesStreamOutput;
+import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.*;
 import java.util.stream.Stream;
 
 @Service("PersonService")
@@ -35,6 +38,7 @@ public class PersonServiceImpl implements PersonService {
 //    private PersonRepository personRepository;
 //    @Autowired
 //    private ElasticsearchRestTemplate elasticsearchRestTemplate;
+   private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(10);
     private final Log log = LogFactory.getLog("PersonService");
     private static final ObjectMapper mapper = new ObjectMapper();
     private final Person defaultPerson = new Person("default", 18, "1234", "worker");
@@ -79,9 +83,25 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Optional<Person> findPersonWithRHLCAsync(String name) {
+        SearchResponse searchResponse = new SearchResponse();
         return Optional.of(Stream.<SearchHit>builder().build()).map(searchHitStream -> {
+                    SearchResponseCallable task = new SearchResponseCallable(searchResponse);
+                    Future<StreamOutput> future = executor.schedule(task, 2000L, TimeUnit.MILLISECONDS);
                     client.restHighLevelClient()
-                            .searchAsync(searchRequestBuilder(name), RequestOptions.DEFAULT, new SearchResponseActionListener(searchHitStream));
+                            .searchAsync(searchRequestBuilder(name), RequestOptions.DEFAULT,
+                                    new SearchResponseActionListener(task));
+                    while (!future.isDone()) {
+                        System.out.println("......waiting......");
+                    }
+
+                    try {
+                        StreamOutput o = future.get();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     return searchHitStream.findFirst().map(x -> {
                         try {
                             return mapper.readValue(x.getSourceAsString(), Person.class);
@@ -104,19 +124,34 @@ public class PersonServiceImpl implements PersonService {
         return searchRequest;
     }
 
-    @RequiredArgsConstructor
     private static class SearchResponseActionListener implements ActionListener<SearchResponse> {
-        private final Stream<SearchHit> stream;
+        private SearchResponseCallable searchResponseCallable;
+
+        public SearchResponseActionListener(SearchResponseCallable searchResponseCallable) {
+            this.searchResponseCallable = searchResponseCallable;
+        }
 
         @Override
         public void onResponse(SearchResponse searchResponse) {
-            Stream<SearchHit> searchHitStream = Arrays.stream(searchResponse.getHits().getHits());
-            Stream.concat(stream, searchHitStream);
+            this.searchResponseCallable = new SearchResponseCallable(searchResponse);
         }
 
         @Override
         public void onFailure(Exception e) {
 
+        }
+    }
+
+    @RequiredArgsConstructor
+    private static class SearchResponseCallable implements Callable {
+
+        private final SearchResponse searchResponse;
+        @Override
+        public StreamOutput call() throws IOException, InterruptedException {
+            Thread.sleep(5000L);
+            BytesStreamOutput bytesStreamOutput = new BytesStreamOutput();
+            searchResponse.writeTo(bytesStreamOutput);
+            return bytesStreamOutput;
         }
     }
 
