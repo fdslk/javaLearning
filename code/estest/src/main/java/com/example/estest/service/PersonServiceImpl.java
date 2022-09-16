@@ -1,7 +1,6 @@
 package com.example.estest.service;
 
 import com.example.estest.controller.model.Person;
-import com.example.estest.repository.ClientBeans;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Option;
@@ -15,6 +14,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
@@ -27,7 +27,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service("PersonService")
 public class PersonServiceImpl implements PersonService {
@@ -42,7 +45,7 @@ public class PersonServiceImpl implements PersonService {
     private final Person defaultPerson = new Person("default", 18, "1234", "worker");
 
     @Autowired
-    private ClientBeans client;
+    private RestHighLevelClient restHighLevelClient;
     @Override
     public boolean index(Person person) {
 //        Person save = personRepository.save(person);
@@ -54,7 +57,7 @@ public class PersonServiceImpl implements PersonService {
         IndexRequest request = new IndexRequest("person", "doc", java.util.UUID.randomUUID().toString());
         ObjectMapper objectMapper = new ObjectMapper();
         request.source(objectMapper.writeValueAsString(person), XContentType.JSON);
-        IndexResponse indexResponse = client.restHighLevelClient().index(request, RequestOptions.DEFAULT);
+        IndexResponse indexResponse = restHighLevelClient.index(request, RequestOptions.DEFAULT);
         log.info(indexResponse.getResult().toString());
         if (indexResponse.status().equals(RestStatus.CREATED))
             return true;
@@ -63,7 +66,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person findPersonWithRHLC(String name) throws IOException {
-        SearchResponse searchResponse = client.restHighLevelClient().search(searchRequestBuilder(name), RequestOptions.DEFAULT);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequestBuilder(name), RequestOptions.DEFAULT);
 
         SearchHits hits = searchResponse.getHits();
 
@@ -83,7 +86,7 @@ public class PersonServiceImpl implements PersonService {
     public Option<Person> findPersonWithRHLCAsync(String name) {
         return Option.of(new SearchResponseCallable()).map(task -> {
             Future<SearchResponse> future = executor.submit(task);
-            client.restHighLevelClient()
+            restHighLevelClient
                     .searchAsync(searchRequestBuilder(name), RequestOptions.DEFAULT,
                             new SearchResponseActionListener(task));
             return Try.of(future::get).toOption()

@@ -5,14 +5,17 @@ import org.apache.http.HttpHost;
 import org.codelibs.elasticsearch.runner.ElasticsearchClusterRunner;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.rest.RestStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,7 +29,8 @@ import static org.elasticsearch.client.RequestOptions.DEFAULT;
 public class BaseIntegrationTest extends BaseTest {
     protected static final ElasticsearchClusterRunner clusterRunner = clusterRunner();
 
-    protected static final RestHighLevelClient restHighLevelClient = restHighLevelClient();
+    @Autowired
+    protected RestHighLevelClient restHighLevelClient;
 
     public static ElasticsearchClusterRunner clusterRunner() {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
@@ -51,11 +55,12 @@ public class BaseIntegrationTest extends BaseTest {
     public void setUp() {
         log.info("cluster runner starting");
         indexData();
+        clusterRunner.refresh();
     }
 
     public static RestHighLevelClient restHighLevelClient() {
         return new RestHighLevelClient(RestClient.builder(
-                new HttpHost("localhost", 9201, "http")
+                new HttpHost("localhost", 9202, "http")
         ));
     }
 
@@ -88,14 +93,20 @@ public class BaseIntegrationTest extends BaseTest {
         personsJsonDataList.stream().forEach(personJson -> {
             indexRequest.source(personJson, XContentType.JSON);
             try {
-                restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-                log.info(String.format("index successfully, :%s", personJson));
+                IndexResponse index = restHighLevelClient.index(indexRequest, DEFAULT);
+                if(index.status().equals(RestStatus.CREATED))
+                    log.info(String.format("index successfully, :%s", personJson));
+                else
+                    log.info(String.format("index failed, :%s", personJson));
+                restHighLevelClient.indices().refresh(new RefreshRequest("person"), DEFAULT);
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error(String.format("index failure: %s", personJson), e);
             }
         });
+    }
 
-        clusterRunner.refresh();
+    protected String getRequest(String queryPath) {
+        return restTemplate.getForObject(TEST_HOSTS + port + "/" + queryPath, String.class);
     }
 }

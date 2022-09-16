@@ -12,9 +12,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class BaseTest {
     @LocalServerPort
-    private int port;
-    private final String TEST_HOSTS = "http://localhost:";
+    protected int port;
+    protected final String TEST_HOSTS = "http://localhost:";
     @Autowired
-    private TestRestTemplate restTemplate;
+    protected TestRestTemplate restTemplate;
 
 }
