@@ -4,7 +4,7 @@ import com.example.estest.controller.model.Person;
 import com.example.estest.repository.ClientBeans;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.ActionListener;
@@ -13,8 +13,6 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.common.io.stream.BytesStreamOutput;
-import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
@@ -83,19 +81,16 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Optional<Person> findPersonWithRHLCAsync(String name) {
-        SearchResponse searchResponse = new SearchResponse();
         return Optional.of(Stream.<SearchHit>builder().build()).map(searchHitStream -> {
-                    SearchResponseCallable task = new SearchResponseCallable(searchResponse);
-                    Future<StreamOutput> future = executor.schedule(task, 2000L, TimeUnit.MILLISECONDS);
+                    SearchResponseCallable task = new SearchResponseCallable();
+                    Future<SearchResponse> future = executor.schedule(task, 1l, TimeUnit.MILLISECONDS);
                     client.restHighLevelClient()
                             .searchAsync(searchRequestBuilder(name), RequestOptions.DEFAULT,
                                     new SearchResponseActionListener(task));
-                    while (!future.isDone()) {
-                        System.out.println("......waiting......");
-                    }
 
                     try {
-                        StreamOutput o = future.get();
+                        SearchResponse o = future.get();
+                        System.out.println(o.getHits().getHits().length);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     } catch (ExecutionException e) {
@@ -133,7 +128,7 @@ public class PersonServiceImpl implements PersonService {
 
         @Override
         public void onResponse(SearchResponse searchResponse) {
-            this.searchResponseCallable = new SearchResponseCallable(searchResponse);
+            this.searchResponseCallable.setSearchResponse(searchResponse);
         }
 
         @Override
@@ -142,16 +137,15 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
-    @RequiredArgsConstructor
     private static class SearchResponseCallable implements Callable {
 
-        private final SearchResponse searchResponse;
+        @Setter
+        private SearchResponse searchResponse;
+
         @Override
-        public StreamOutput call() throws IOException, InterruptedException {
-            Thread.sleep(5000L);
-            BytesStreamOutput bytesStreamOutput = new BytesStreamOutput();
-            searchResponse.writeTo(bytesStreamOutput);
-            return bytesStreamOutput;
+        public SearchResponse call() {
+            while(null == searchResponse);
+            return searchResponse;
         }
     }
 
