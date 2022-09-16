@@ -4,6 +4,8 @@ import com.example.estest.controller.model.Person;
 import com.example.estest.repository.ClientBeans;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
 import lombok.Setter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,7 +18,6 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.*;
-import java.util.stream.Stream;
 
 @Service("PersonService")
 public class PersonServiceImpl implements PersonService {
@@ -36,7 +36,7 @@ public class PersonServiceImpl implements PersonService {
 //    private PersonRepository personRepository;
 //    @Autowired
 //    private ElasticsearchRestTemplate elasticsearchRestTemplate;
-   private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(10);
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Log log = LogFactory.getLog("PersonService");
     private static final ObjectMapper mapper = new ObjectMapper();
     private final Person defaultPerson = new Person("default", 18, "1234", "worker");
@@ -80,33 +80,26 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<Person> findPersonWithRHLCAsync(String name) {
-        return Optional.of(Stream.<SearchHit>builder().build()).map(searchHitStream -> {
-                    SearchResponseCallable task = new SearchResponseCallable();
-                    Future<SearchResponse> future = executor.schedule(task, 1l, TimeUnit.MILLISECONDS);
-                    client.restHighLevelClient()
-                            .searchAsync(searchRequestBuilder(name), RequestOptions.DEFAULT,
-                                    new SearchResponseActionListener(task));
-
-                    try {
-                        SearchResponse o = future.get();
-                        System.out.println(o.getHits().getHits().length);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    } catch (ExecutionException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    return searchHitStream.findFirst().map(x -> {
+    public Option<Person> findPersonWithRHLCAsync(String name) {
+        return Option.of(new SearchResponseCallable()).map(task -> {
+            Future<SearchResponse> future = executor.submit(task);
+            client.restHighLevelClient()
+                    .searchAsync(searchRequestBuilder(name), RequestOptions.DEFAULT,
+                            new SearchResponseActionListener(task));
+            return Try.of(future::get).toOption()
+                    .map(SearchResponse::getHits)
+                    .map(SearchHits::getHits)
+                    .map(x -> Arrays.stream(x).findFirst())
+                    .filter(Optional::isPresent)
+                    .map(x -> {
                         try {
-                            return mapper.readValue(x.getSourceAsString(), Person.class);
+                            return mapper.readValue(x.get().getSourceAsString(), Person.class);
                         } catch (JsonProcessingException e) {
                             e.printStackTrace();
                         }
                         return null;
                     });
-                })
-                .map(person -> person.orElse(defaultPerson));
+        }).map(x -> x.getOrElse(defaultPerson));
     }
 
     private SearchRequest searchRequestBuilder(String name) {
@@ -140,7 +133,7 @@ public class PersonServiceImpl implements PersonService {
     private static class SearchResponseCallable implements Callable {
 
         @Setter
-        private SearchResponse searchResponse;
+        private volatile SearchResponse searchResponse;
 
         @Override
         public SearchResponse call() {

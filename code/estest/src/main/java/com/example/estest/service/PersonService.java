@@ -1,10 +1,10 @@
 package com.example.estest.service;
 
 import com.example.estest.controller.model.Person;
+import io.vavr.control.Option;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface PersonService {
     boolean index(Person person);
@@ -15,5 +15,5 @@ public interface PersonService {
 
     Person findPersonWithRHLC(String name) throws IOException;
 
-    Optional<Person> findPersonWithRHLCAsync(String name) throws IOException;
+    Option<Person> findPersonWithRHLCAsync(String name) throws IOException;
 }
