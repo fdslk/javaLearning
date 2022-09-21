@@ -16,6 +16,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHits;
@@ -108,9 +109,9 @@ public class PersonServiceImpl implements PersonService {
     private SearchRequest searchRequestBuilder(String name) {
         SearchRequest searchRequest = new SearchRequest("person");
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-        sourceBuilder.query(QueryBuilders.termQuery("name", name));
-        sourceBuilder.from(0);
-        sourceBuilder.size(5);
+
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("name", name);
+        sourceBuilder.query(matchQueryBuilder);
         searchRequest.source(sourceBuilder);
         return searchRequest;
     }

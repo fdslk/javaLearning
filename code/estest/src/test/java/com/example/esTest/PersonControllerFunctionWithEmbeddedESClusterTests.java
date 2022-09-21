@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.jupiter.api.Test;
@@ -23,14 +25,24 @@ public class PersonControllerFunctionWithEmbeddedESClusterTests extends BaseInte
     }
 
     @Test
+    void shouldGetPersonByRHLCAsync() throws JsonProcessingException {
+
+        String request = getRequest("person/async/rhlc?name=Bill");
+        assertThat(new ObjectMapper().readValue(request, Person.class).getName()).isEqualTo("Bill");
+    }
+
+    @Test
     void shouldGetDataFromEmbeddedES() throws IOException {
         SearchRequest searchRequest = new SearchRequest("person");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
+
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("name", "Bill");
+        searchSourceBuilder.query(matchQueryBuilder);
         searchRequest.source(searchSourceBuilder);
+
 
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
 
-        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(2);
+        assertThat(searchResponse.getHits().getTotalHits()).isEqualTo(1);
     }
 }
