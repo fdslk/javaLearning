@@ -95,3 +95,9 @@
   * using stub to mock elastic search server
   * using ESIntegTestCase
     * Not good choice....
+* migration `rest-high-level-client` to `java-client`
+  * motivation
+    * rest-high-level-client is deprecated since version 7.15.0, which means if you would want to use high level ES, the `rhlc` might take some incompatible problems.
+    * `rhlc` used http to transport data, while elastic-search-java-api used transport protocol to transport data. 
+  * how to
+    * add new dependency 
