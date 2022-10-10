@@ -100,4 +100,39 @@
     * rest-high-level-client is deprecated since version 7.15.0, which means if you would want to use high level ES, the `rhlc` might take some incompatible problems.
     * `rhlc` used http to transport data, while elastic-search-java-api used transport protocol to transport data. 
   * how to
-    * add new dependency 
+    * add new dependency
+    ```xml
+     <dependency>
+       <groupId>co.elastic.clients</groupId>
+       <artifactId>elasticsearch-java</artifactId>
+       <version>8.4.3</version>
+     </dependency>
+     <dependency>
+       <groupId>com.fasterxml.jackson.core</groupId>
+       <artifactId>jackson-databind</artifactId>
+       <version>2.12.3</version>
+     </dependency>
+    ```
+    * tips
+      * if this `NoClassDefFoundError: jakarta/json/spi/JsonProvider` happens to application
+      you can add the following dependency
+      ```xml
+      <dependency>
+        <groupId>jakarta.json</groupId>
+        <artifactId>jakarta.json-api</artifactId>
+        <version>2.0.1</version>
+      </dependency>
+      ```
+      * if this `{
+        "error" : "Content-Type header [application/x-www-form-urlencoded] is not supported",
+        "status" : 406
+        }` happens to application
+      you can add a default header
+      ```java
+      RestClient.builder(
+            new HttpHost("127.0.0.1", 9201))
+            .setDefaultHeaders(new Header[]{
+                    new BasicHeader("Content-type", "application/json")
+            })
+            .build();
+      ```
