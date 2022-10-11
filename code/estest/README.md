@@ -113,7 +113,9 @@
        <version>2.12.3</version>
      </dependency>
     ```
-    * tips
+    * use the same rest client
+    * set up compatibility mode by `.setApiCompatibilityMode(true)` for rest-high-level-client
+    * **tips**
       * if this `NoClassDefFoundError: jakarta/json/spi/JsonProvider` happens to application
       you can add the following dependency
       ```xml
@@ -136,3 +138,8 @@
             })
             .build();
       ```
+      * if you use the latest version elastic search, you might find out the following error:
+      ```xml
+      [2022-02-18T15:50:30,235][WARN ][o.e.x.s.t.n.SecurityNetty4HttpServerTransport] [Yusufs-MBP.home] received plaintext http traffic on an https channel, closing connection Netty4HttpChannel{localAddress=/127.0.0.1:9200, remoteAddress=/127.0.0.1:52260}
+      ```
+      you can define a custom elastic search docker image using custom `elasticsearch.yml` and close `xpack.security.enabled` and `xpack.security.http.ssl.enabled`.
