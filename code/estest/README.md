@@ -1,12 +1,7 @@
 # Elastic Search Integration test
 
 * What is the Elastic Search Engine
-  * Why we need it
-  * The using scenarios
-  * peer product
-  * two-sides
-    * advantages
-    * shortcoming
+  ![some core definition of ES](https://user-images.githubusercontent.com/6279298/195224811-1137dceb-8857-4d3f-87fc-27cbb5768299.png)
 * How to run local elastic search
   * run docker cmd 
   ```
@@ -98,7 +93,8 @@
 * migration `rest-high-level-client` to `java-client`
   * motivation
     * rest-high-level-client is deprecated since version 7.15.0, which means if you would want to use high level ES, the `rhlc` might take some incompatible problems.
-    * `rhlc` used http to transport data, while elastic-search-java-api used transport protocol to transport data. 
+    * `rhlc` used http to transport data, while elastic-search-java-api used transport protocol to transport data.
+  * distinguish between the `rhlc` and `elasitc search java api`
   * how to
     * add new dependency
     ```xml
