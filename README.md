@@ -18,6 +18,8 @@
   * [jwt in spring-boot](https://github.com/Fdslk/javaLearning/tree/master/code/spring-boot-jwt)
   * [OAuth2 in spring-boot](https://github.com/Fdslk/javaLearning/tree/master/code/authbyzero)
   * [newrelic integration](https://github.com/Fdslk/javaLearning/tree/master/code/newrelic)
+  * [migrate rest high-level client to es-java-client](https://github.com/Fdslk/javaLearning/tree/master/code/esjavaapi)
+
 
 * java 测试
   * TestNg
@@ -28,4 +30,3 @@
   * [rest-assured integration test](https://github.com/Fdslk/javaLearning/tree/master/code/openapidemo)
   * [elastic search integration test](https://github.com/Fdslk/javaLearning/tree/master/code/estest)
 	* [use the same version between rhlc and elastic-search-cluster-runner](https://github.com/Fdslk/javaLearning/tree/master/code/EmbededESIntegrationTest)
-	* [migrate rest high-level client to es-java-client](https://github.com/Fdslk/javaLearning/tree/master/code/esjavaapi)
