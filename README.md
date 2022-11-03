@@ -28,3 +28,4 @@
   * [rest-assured integration test](https://github.com/Fdslk/javaLearning/tree/master/code/openapidemo)
   * [elastic search integration test](https://github.com/Fdslk/javaLearning/tree/master/code/estest)
 	* [use the same version between rhlc and elastic-search-cluster-runner](https://github.com/Fdslk/javaLearning/tree/master/code/EmbededESIntegrationTest)
+	* [migrate rest high-level client to es-java-client](https://github.com/Fdslk/javaLearning/tree/master/code/esjavaapi)
