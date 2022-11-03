@@ -74,19 +74,21 @@
       * functional test class extends `BaseTestClass`
       * write test in the specific test class and make assertions
   * using embedded elastic-search,
+    * embedded es cluster build flow
+        ![embedded-es-cluster](https://user-images.githubusercontent.com/6279298/196337361-6cf41144-96d2-4667-a23e-2ce19a7d5818.png) 
     * add dependency
     ```xml
     <dependency>
-	    <groupId>org.codelibs</groupId>
-		   <artifactId>elasticsearch-cluster-runner</artifactId>
-		   <version>6.6.0.0</version>
-		   <scope>test</scope>
+       <groupId>org.codelibs</groupId>
+          <artifactId>elasticsearch-cluster-runner</artifactId>
+          <version>6.6.0.0</version>
+          <scope>test</scope>
     </dependency>
     ```
     * build default JVM ES cluster by defining a static `ElasticsearchClusterRunner`
     * define default `RestHighLevelClient` and set port number as **9201**
-      * tips: If you want update the version of `elasticsearch-cluster-runner`, you must take care of the rest-high-level-client using elasticsearch version.
-      ![keep the version elasticsearch version be same](https://user-images.githubusercontent.com/6279298/193168951-9144cee0-f9d5-4c98-bc20-9fd6a6f4328a.png)
+     * tips: If you want update the version of `elasticsearch-cluster-runner`, you must take care of the rest-high-level-client using elasticsearch version.
+     ![keep the version elasticsearch version be same](https://user-images.githubusercontent.com/6279298/193168951-9144cee0-f9d5-4c98-bc20-9fd6a6f4328a.png)
   * using stub to mock elastic search server
   * using ESIntegTestCase
     * Not good choice....
