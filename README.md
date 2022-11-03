@@ -19,7 +19,7 @@
   * [OAuth2 in spring-boot](https://github.com/Fdslk/javaLearning/tree/master/code/authbyzero)
   * [newrelic integration](https://github.com/Fdslk/javaLearning/tree/master/code/newrelic)
   * [migrate rest high-level client to es-java-client](https://github.com/Fdslk/javaLearning/tree/master/code/esjavaapi)
-
+  * [build local es cluster](https://github.com/Fdslk/javaLearning/tree/master/code/local-es-cluster)
 
 * java 测试
   * TestNg
