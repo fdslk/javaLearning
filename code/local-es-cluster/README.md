@@ -53,3 +53,11 @@
   * health-check设置
   * index生命周期设置
   * index management settings(索引管理配置)
+### 升级
+* 老版本的indices的兼容性考虑，🌰：6.x版本的es的indices和8.x版本的升级，可能先要将原有的indices删除掉，在使用新的
+  * 当es的版本升级之后，需要检查在新版本中是否有即将`archived`的功能，
+    * ```GET _cluster/settings?flat_settings=true&filter_path=persistent.archived*```, 如果返回结果是空的，表示没有`archived`节点设置
+    * `GET */_settings?flat_settings=true&filter_path=**.settings.archived*`，检查是否有`archived`的index设置
+* REST-API的迁移，是一个break changing, <span style="color:yellow"><strong>两种版本的restful接口有什么区别?</strong></span>
+* JVM版本的升级，高版本的es需要java 17及以上的版本
+* es提供了`archive functionality`，该功能可以把老版本的indices导入到新版本的es中 <strong><span style="color:yellow">How to?</strong>
