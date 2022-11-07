@@ -53,6 +53,12 @@
   * health-check设置
   * index生命周期设置
   * index management settings(索引管理配置)
+  * 机器学习配置
+  * 节点设置，（多个节点构成了一个cluster，cluster中的节点可以通过http或者transport traffic协议）
+  * 网络设置，用户访问es使用http协议，节点之间使用transport traffic的协议
+  * 节点查询缓设置，存放每个节点查询 **<span style="color:yellow">不确定是缓存查询条件还是查询条件查询到的内容？</span>**
+  * 查询设置，🌰：查询最大数量
+  * 查询通知设置 (*Watcher settings*)
 ### 升级
 * 老版本的indices的兼容性考虑，🌰：6.x版本的es的indices和8.x版本的升级，可能先要将原有的indices删除掉，在使用新的
   * 当es的版本升级之后，需要检查在新版本中是否有即将`archived`的功能，
