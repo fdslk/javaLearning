@@ -67,3 +67,32 @@
 * REST-API的迁移，是一个break changing, <span style="color:yellow"><strong>两种版本的restful接口有什么区别?</strong></span>
 * JVM版本的升级，高版本的es需要java 17及以上的版本
 * es提供了`archive functionality`，该功能可以把老版本的indices导入到新版本的es中 <strong><span style="color:yellow">How to?</strong>
+### index(索引)模块，每一个小节都可以被当做是一个`module`
+* 分为静态和动态设置，<strong style="color:yellow">这两种设置之间的区别是什么？</strong>
+* 分析，在index module中该模块将用来转换一个字符串为一个独立的词条，
+  * 而这些词条将会被加入到inverted-index中，这样是为了这个文档可以被搜索 <strong style="color:yellow">How to?</strong>
+  * 被用来进行high-level-queries，使用`match` query来产生搜索词条
+* 索引片区分配模块
+  * 分配片区所属的node，`Shard allocation filtering`
+    * conditions包括，require，exclude，include
+    * 可以用被用来做筛选的字段是：`_name, _host_ip, _publish_ip, _ip, _host, _id, _tier and _tier_preference`
+  * 节点延迟分配设置，`Delay allocation`，当集群上的某个节点离群之后，分配给这个节点的片区资源将会被重新分配，但是如果shard的`delay`时间，那么这些shard就可能在当前离线node在超时前恢复，重新分配给这个node，减少了一定的操作开销
+   ```
+   PUT _all/_settings
+   {
+     "settings": {
+      "index.unassigned.node_left.delayed_timeout": "5m"
+      }
+   }
+   ```
+  * 每个node总共分配的片区，`Total shards per node`
+  * 数据层配置，`Data tier allocation` <strong style="color:yellow">what is the `data tiers` ?</strong>
+* 索引块，可以用来控制es index的可被使用的操作，读，写，metadata操作 <strong style="color:yellow">应用场景是啥?</strong>
+* 分片合并，在es中所有的shard都是一个Lucene索引，那么这些个碎片在一定时间内都是可以被合并成一个大的碎片，进而被继续使用 <strong style="color:yellow">这里感觉有点儿像储存解空间的碎片回收?</strong>
+* 相似性模块，每个field都有一个相似性评分，该评分是用来评价查询回来的document的匹配度，通过es提供的接口，我们可以设置不同的相似性计算算法，
+* 慢查询日志，可以设置查询时间超过多少秒就是一个不同级别的日志，🌰 ：`index.search.slowlog.threshold.query.warn: 10s`，某个查询的执行时间超过了10s, 就会被记录成一个warning级别的日志，该配置使用`log4j2.properties`
+* 储存方式 `index.store.type:`，该配置可以使用config/elasticserch.yml，也可以使用es提供给的settings api更新
+* transaction log简称为`tranlog`，这些日志只要在一个Lucene的一次commit时才会记录日志， <strong style="color:yellow">什么是一次Lucene commit?</strong>
+* history retention
+* index sort 一个新建的index，Lucene的不会创建任何的排序规则，需要es提供的restful api改变sort规则
+* 
