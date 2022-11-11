@@ -95,4 +95,42 @@
 * transaction log简称为`tranlog`，这些日志只要在一个Lucene的一次commit时才会记录日志， <strong style="color:yellow">什么是一次Lucene commit?</strong>
 * history retention
 * index sort 一个新建的index，Lucene的不会创建任何的排序规则，需要es提供的restful api改变sort规则
-* 
+* indexing pressure <strong style="color:yellow">分散集群的压力的？</strong>
+
+### mapping
+* 每一个数据被es储存的时候，field按照不同的类型储存，而field具有不同的property，比如说`_source`，可以修改这个属性的储存格式，使得es的search更加的快
+* 类别
+  * <strong style="color:yellow">dynamic?</strong> 
+    * 可以自定义一个mapping，以下例子的含义是，在data index中，定义一个mapping type `_doc`，字段名称为`count`，数据类型为`long`
+    ```
+     PUT data/_doc/1 
+     { "count": 5 }****
+    ```
+    * es中有一个参数`dynamic`来控制是否会自动的创建一个类型mapping，简而言之，dynamic mapping就是会给新加入的数据自动匹配到一种类型来存储在es中，<strong style="color:yellow">如果没有找到对应的数据类型，是否会使用默认类型？貌似默认类型就是`text`</strong>
+    * 除了es自己提供的一些mapping template之外，es还提供了接口让我们来自定义mapping template
+      * 类型
+        * 匹配的类型
+        * 匹配和未匹配到的过滤条件
+        * 某个字段的路径匹配规则
+  * explicit
+    * 定义mapping的定义，🌰： 比如说哪个字符串字段应该被当做是一个全文本字段。。。，静态mapping以我现在的理解，有点像是一个字段的对应的关系
+    * 以以下的命令为一个例子，该命令的作用是在创建一个index的同时，定义一个mapping关系，只有当你储存一个数据，该数据的field是`age`，该field的值将会以`integer`的类型来储存
+    ```
+     PUT /my-index-000001
+     {
+       "mappings": {
+           "properties": {
+           "age":    { "type": "integer" },  
+           "email":  { "type": "keyword"  },
+           "name":   { "type": "text"  }     
+           }
+        }
+     }
+    ```
+  * 区别，`dynamic`不需要指定具体的field名称，`explicit`需要指定具体的字段名称，再根据字段的名称来存储字段内容的类型
+* runtime field, 运行时字段，在添加时，不会添加新的索引，不用定义任何的数据匹配关系
+  * 好处
+  * 需要均衡的地方
+  * runtime依旧是mapping的一种，但是这种方式需要定义一个`runtime`的`mapping`，然后再在这个mapping中定义一个`plainless script`来操作对应字段数据的值
+  * runtime的mapping的优先级是高于index mapping，所以如果你在你的index中定义一个runtime的mapping，在查询的时候会覆盖之前的存入值的类型，<strong style="color:yellow">不确定是否会改变之前已存入的数据的值，还是只是在查询时的临时的改变？</strong>
+  
