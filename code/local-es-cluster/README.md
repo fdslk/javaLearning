@@ -129,8 +129,22 @@
     ```
   * 区别，`dynamic`不需要指定具体的field名称，`explicit`需要指定具体的字段名称，再根据字段的名称来存储字段内容的类型
 * runtime field, 运行时字段，在添加时，不会添加新的索引，不用定义任何的数据匹配关系
-  * 好处
+  * 好处，可以在不改变原有值的情况下，定义runtime的mapping关系，然后再通过新定义的mapping的字段的condition过滤出符合条件的values
   * 需要均衡的地方
   * runtime依旧是mapping的一种，但是这种方式需要定义一个`runtime`的`mapping`，然后再在这个mapping中定义一个`plainless script`来操作对应字段数据的值
   * runtime的mapping的优先级是高于index mapping，所以如果你在你的index中定义一个runtime的mapping，在查询的时候会覆盖之前的存入值的类型，<strong style="color:yellow">不确定是否会改变之前已存入的数据的值，还是只是在查询时的临时的改变？</strong>
-  
+  * 复写字段值在查询的时候，但是不会改变原有值，只会对匹配上的值做一些**计算**或者**类型转换**诸如此类的操作
+* field数据类型
+  * 基础类型，binary, boolean, Keywords, Numbers, Dates, alias
+  * 对象&关系类型，object，flatten，nested，join
+  * 结构体数据类型，Range，ip，version，murmur3
+  * 聚合数据类型，aggregate_metric_double，histogram
+  * 文本搜索类型，text fields, annotated-text, completion, search_as_you_type, token_count
+  * 文档排序类型，dense_type, rank_feature, rank_features
+  * 空间数据类型，geo_type, geo_shape, point, shape
+* Metadata fields
+* 提供参数，这些参数主要作用于值类型的数据类型，但是这是参数，并不是适应于每个数据类型，举个🌰 ：对于`analyer`参数，只适应于`text`类型的数据
+* mapping限制设置
+  * index对应的所有的字段的最大数量
+  * index对应的mapping的最大深度
+* 8.0以上的es不在支持mapping type，
