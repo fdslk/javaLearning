@@ -25,7 +25,23 @@
   * 定义Rule，并注册rule
   * 最后定义一个通用的方法，使用RuleEngine的`fire`方法，来触发规则匹配
 * annotation
+  * 定义一个`Condition`注解的方法，这里定义满足条件的标准
+  * 定义一个`Action`注解的方法，这里定义当条件满足时的要做的业务
 * Expression
 * fluent programmatic way
 * rule yml
+  * 定义一个yml文件，同样的，`MVELRuleFactory`也支持`json`格式的文件
+  * 加入依赖
+  ```xml
+   <dependency>
+      <groupId>org.jeasy</groupId>
+      <artifactId>easy-rules-mvel</artifactId>
+      <version>4.1.0</version>
+   </dependency>
+  ```
+  * 使用fileReader读取文件，构造到`MVELRuleFactory`中
+    * 如果是多条件的匹配，使用`createRules`，否则使用`createRule`
+    * [MVEL语法](https://github.com/imona/tutorial/wiki/MVEL-Guide#foreach)
+  * 如果遇到以下的错误 ```[Error: could not access field: org.zqf.easyruledemo.Person.age]```
+    * 我的解决方法是将`Person`变成一个公有的方法 <strong style="color:yellow">如果不是公有的方法不能构造吗？</strong>
 * spring boot 项目，使用注解，注入rule

@@ -4,7 +4,7 @@ import org.jeasy.rules.api.Facts;
 import org.jeasy.rules.core.BasicRule;
 
 public abstract class BasicTestRule extends BasicRule {
-    private static final String FACTS = "facts";
+    public static final String FACTS = "facts";
 
     public BasicTestRule(final String name, final int priority) {
         super(name, DEFAULT_DESCRIPTION, priority);

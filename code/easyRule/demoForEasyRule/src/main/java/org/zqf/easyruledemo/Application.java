@@ -17,6 +17,7 @@ public class Application {
         rules.register(new AnimalTestRule());
         rules.register(new PersonTestRule());
         rules.register(new UnmatchedTestRule());
+        rules.register(new AnnotationTestRule());
 
         System.out.println(new RulesFacade(rulesEngine, rules).generate("PersonTestRule").get().getResultType());
     }

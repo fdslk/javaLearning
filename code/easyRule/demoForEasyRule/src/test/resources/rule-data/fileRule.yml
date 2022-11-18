@@ -1,0 +1,14 @@
+---
+name: non adult rule
+description: when age is less than or equal 18, then mark as non-adult
+priority: 1
+condition: "person.age <= 18"
+actions:
+  - "person.setAdult(false);"
+---
+name: adult rule
+description: when age is greater than 18, then mark as adult
+priority: 2
+condition: "person.age > 18"
+actions:
+  - "person.setAdult(true);"
