@@ -4,7 +4,6 @@ public class RuleResult {
 
     private String classType = "";
 
-
     private String resultType = "";
 
     public void setResultType(String resultType) {
