@@ -5,6 +5,8 @@ import org.jeasy.rules.api.Rule;
 import org.jeasy.rules.api.Rules;
 import org.jeasy.rules.api.RulesEngineParameters;
 import org.jeasy.rules.core.DefaultRulesEngine;
+import org.jeasy.rules.core.RuleBuilder;
+import org.jeasy.rules.mvel.MVELRule;
 import org.jeasy.rules.mvel.MVELRuleFactory;
 import org.jeasy.rules.support.reader.YamlRuleDefinitionReader;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class RulesFacadeTest {
@@ -63,6 +66,56 @@ class RulesFacadeTest {
         rules.register(weatherRule);
 
         rulesEngine.fire(rules, facts);
+    }
+
+    @Test
+    void shouldMatchRuleGivenRuleIsDefinedByProgrammaticWay() {
+        Rule rule = new RuleBuilder()
+                .description("test")
+                .name("checkAdult")
+                .when(condition -> {
+                    RuleResult facts = condition.get("facts");
+                    return facts.getClassType().equals("test");
+                })
+                .then(facts -> {
+                    RuleResult ruleResult = facts.get("facts");
+                    System.out.println("--------matches-------");
+                    ruleResult.setResultType("test");
+                })
+                .build();
+
+        Rules rules = new Rules();
+        rules.register(rule);
+
+        Facts facts = new Facts();
+        RuleResult ruleResult = new RuleResult();
+        ruleResult.setClassType("test");
+        facts.put("facts", ruleResult);
+
+        rulesEngine.fire(rules, facts);
+
+        assertEquals(ruleResult.getResultType(), "test");
+    }
+
+    @Test
+    void shouldMatchRuleGivenRuleIsDefinedByMVELRule() {
+        Rule testRule = new MVELRule()
+                .name("Test Rule")
+                .description("if class Type is `test`")
+                .when("ruleResult.classType == 'test'")
+                .then("ruleResult.setResultType('test');");
+
+        Rules rules = new Rules();
+        rules.register(testRule);
+
+        Facts facts = new Facts();
+        RuleResult ruleResult = new RuleResult();
+        ruleResult.setClassType("test");
+        facts.put("ruleResult", ruleResult);
+
+        rulesEngine.fire(rules, facts);
+
+        assertTrue(ruleResult.getResultType().equals("test"));
     }
 
     @ParameterizedTest
