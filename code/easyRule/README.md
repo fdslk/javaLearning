@@ -138,7 +138,24 @@
       * [MVEL语法](https://github.com/imona/tutorial/wiki/MVEL-Guide#foreach)
       * 如果遇到以下的错误 ```[Error: could not access field: org.zqf.easyruledemo.Person.age]```
         * 我的解决方法是将`Person`变成一个公有的方法 <strong style="color:yellow">如果不是公有的方法不能构造吗？</strong>
-  * spring boot 项目，使用注解，注入rule
+  * spring boot 项目，使用注解，注入Rules
+    * 定义一个Rule的configuration class，对此使用注解`@Configuration`，spring boot的bean容器就会在启动的时候，将当前父类`BasicVegetableRule`下所有子类都加载到入参`basicVegetableRules`中，当然如果想要使用java的bean的便利，那么需要加载的子类也需要加上注解`@Component`。这样在spring boot项目启动的时候就会将其扫描到这个`Set`中。`Rule`是一个<strong style='color:RED'>interface</strong>，所以所有的实现都可以转成其本身。
+    ```java
+     @Configuration
+     public class RuleBeans {
+     @Bean("BasicVegetableRule")
+     public Rules BasicVegetableRules(final Set<BasicVegetableRule> basicVegetableRules) {
+        return new Rules(basicVegetableRules.stream().map(Rule.class::cast).collect(Collectors.toSet()));
+       }
+     }
+    ```
+    ```java
+    @Component
+    public class PotatoRule extends BasicVegetableRule {
+       xxxxx;
+    }
+    ```
+    * 在spring boot项目中，有一些不同的业务场景，可能需要用到大量的`if else`来完成不同的业务场景。将这些Component利用Java bean加载到Set对象中，将其构造到`Rules`，进而可以直接传入ruleEngine中完成规则匹配
 * 如何使用ruleEngine
   * 定义RuleEngine，初始化rule parameter参数
        ```java

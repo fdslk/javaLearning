@@ -20,7 +20,9 @@
   * [newrelic integration](https://github.com/Fdslk/javaLearning/tree/master/code/newrelic)
   * [migrate rest high-level client to es-java-client](https://github.com/Fdslk/javaLearning/tree/master/code/esjavaapi)
   * [build local es cluster](https://github.com/Fdslk/javaLearning/tree/master/code/local-es-cluster)
-  * [how to use rule engine `easy rule`](https://github.com/Fdslk/javaLearning/tree/master/code/easyRule)
+  * [how to use rule engine `easy rule`]
+    * [非spring boot](https://github.com/Fdslk/javaLearning/tree/master/code/easyRule)
+    * [spring boot](https://github.com/Fdslk/javaLearning/tree/master/code/easyruledemo)
 
 * java 测试
   * TestNg
