@@ -142,25 +142,64 @@
         * 我的解决方法是将`Person`变成一个公有的方法 <strong style="color:yellow">原因是我当时第一次写的时候，是将`Person`定义在了当前的测试类中，所以当前class的级别为`default`，使用的范围是在当前包下。但是当easy rule的要使用person类中的方法时，因为没有在同一个包下，所以访问不了。</strong>
     * 支持组合规则
       * UnitRuleGroup，在yml中定义`compositeRuleType`为`UnitRuleGroup`，被定义的规则需要都被匹配上才能被选择上，如果有一个**子规则**没有匹配上，那么结果仍然不会被匹配
-      ```yaml
-      name: adult check composing rule
-      ompositeRuleType: UnitRuleGroup
-      riority: 1
-      omposingRules:
-       name: adult
-       description: If the age is more than 18
-       priority: 1
-       condition: "person.age > 18"
-       actions:
-       - "person.setAdult(true);"
-       name: foo-adult
-       description: If the name is 'foo'
-       priority: 1
-       condition: "person.name == 'foo'"
-       actions:
-       - "person.setAdult(true);"
-      ```
-      * `ConditionalRuleGroup`
+        ```yaml
+        name: adult check composing rule
+        ompositeRuleType: UnitRuleGroup
+        riority: 1
+        omposingRules:
+         name: adult
+         description: If the age is more than 18
+         priority: 1
+         condition: "person.age > 18"
+         actions:
+         - "person.setAdult(true);"
+         name: foo-adult
+         description: If the name is 'foo'
+         priority: 1
+         condition: "person.name == 'foo'"
+         actions:
+         - "person.setAdult(true);"
+        ```
+      * `ConditionalRuleGroup`，举个🌰：这种group类似于一种组合拳，有一个规则必须先执行，然后再看有没有其他的规则能够匹配上，就像登录一样，验证通过之后，你再去做一些其他的操作
+        ```yaml
+         name: adult check Condiftional rule Group
+         compositeRuleType: ConditionalRuleGroup
+         priority: 1
+         composingRules:
+         - name: adult
+           description: If the age is more than 18
+           priority: 1
+           condition: "person.age > 18"
+           actions:
+           - "person.setAdult(true);"
+         - name: foo-adult
+           description: If the name is 'foo'
+           priority: 2
+           condition: "person.name == 'foo'"
+           actions:
+           - "person.setAdult(true);"
+         
+        ```
+        * tips，`ConditionalRuleGroup`将会检查`composingRules`中的优先级，其中只允许有一个`priority=1`的**子规则**
+      * `ActivationRuleGroup`，只会有一个子规则匹配上，那么就会忽略其他的规则，直接执行这个被选择上的规则
+        ```yaml
+        name: adult check Condiftional rule Group
+         compositeRuleType: ActivationRuleGroup
+         priority: 1
+         composingRules:
+         - name: adult
+           description: If the age is more than 18
+           priority: 1
+           condition: "person.age > 18"
+           actions:
+           - "person.setAdult(true);"
+         - name: foo-adult
+           description: If the name is 'foo'
+           priority: 2
+           condition: "person.name == 'foo'"
+           actions:
+           - "person.setAdult(true);"
+        ```
   * spring boot 项目，使用注解，注入Rules
     * 定义一个Rule的configuration class，对此使用注解`@Configuration`，spring boot的bean容器就会在启动的时候，将当前父类`BasicVegetableRule`下所有子类都加载到入参`basicVegetableRules`中，当然如果想要使用java的bean的便利，那么需要加载的子类也需要加上注解`@Component`。这样在spring boot项目启动的时候就会将其扫描到这个`Set`中。`Rule`是一个<strong style='color:RED'>interface</strong>，所以所有的实现都可以转成其本身。
     ```java

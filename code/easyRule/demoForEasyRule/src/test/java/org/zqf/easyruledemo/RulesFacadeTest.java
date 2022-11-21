@@ -27,6 +27,7 @@ class RulesFacadeTest {
     private InputStream resourceAsStream = RulesFacadeTest.class.getResourceAsStream("/rule-data/fileRule.yml");
     private InputStream singleResourceAsStream = RulesFacadeTest.class.getResourceAsStream("/rule-data/singleFileRule.yml");
     private InputStream composingResourceAsStream = RulesFacadeTest.class.getResourceAsStream("/rule-data/composingRules.yml");
+    private InputStream conditionalRuleResourceAsStream = RulesFacadeTest.class.getResourceAsStream("/rule-data/conditionalRules.yml");
     private Facts facts = new Facts();
 
     public RulesFacadeTest() {
@@ -136,6 +137,22 @@ class RulesFacadeTest {
     @Test
     void shouldReturnComposingRule() throws Exception {
         Rule rule = ruleFactory.createRule(new InputStreamReader(composingResourceAsStream));
+
+        Rules rules = new Rules();
+
+        rules.register(rule);
+
+        Person person = new Person("foo", 20);
+        facts.put("person", person);
+
+        rulesEngine.fire(rules, facts);
+
+        assertTrue(person.isAdult());
+    }
+
+    @Test
+    void shouldReturnConditionalRuleGroup() throws Exception {
+        Rule rule = ruleFactory.createRule(new InputStreamReader(conditionalRuleResourceAsStream));
 
         Rules rules = new Rules();
 
