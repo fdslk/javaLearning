@@ -26,6 +26,7 @@ class RulesFacadeTest {
     private MVELRuleFactory ruleFactory = new MVELRuleFactory(new YamlRuleDefinitionReader());
     private InputStream resourceAsStream = RulesFacadeTest.class.getResourceAsStream("/rule-data/fileRule.yml");
     private InputStream singleResourceAsStream = RulesFacadeTest.class.getResourceAsStream("/rule-data/singleFileRule.yml");
+    private InputStream composingResourceAsStream = RulesFacadeTest.class.getResourceAsStream("/rule-data/composingRules.yml");
     private Facts facts = new Facts();
 
     public RulesFacadeTest() {
@@ -130,5 +131,21 @@ class RulesFacadeTest {
         rulesEngine.fire(multipleRules, facts);
 
         assertEquals(person.isAdult(), isAdult);
+    }
+
+    @Test
+    void shouldReturnComposingRule() throws Exception {
+        Rule rule = ruleFactory.createRule(new InputStreamReader(composingResourceAsStream));
+
+        Rules rules = new Rules();
+
+        rules.register(rule);
+
+        Person person = new Person("foo", 20);
+        facts.put("person", person);
+
+        rulesEngine.fire(rules, facts);
+
+        assertTrue(person.isAdult());
     }
 }

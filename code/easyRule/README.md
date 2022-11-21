@@ -2,7 +2,8 @@
 
 ## 什么是easy rule
 * easy rule是一个rule engine，用来代替复杂的`if` `else` block，在代码中使得业务能够得到更好的分离，从而让代码能够更好的使用策略模式来分离业务
-* 与之相同的还有很多其他的rule engine
+* 更多关于rule engine的details，可以推荐一篇老马的文章[RulesEngine](https://martinfowler.com/bliki/RulesEngine.html)
+* 与之相同的还有很多其他的java language的rule engine
   * Drool
   * OpenL Tablets
   * RuleBook
@@ -102,22 +103,23 @@
     * 创建`RuleBuilder`，以builder的形式定义了Rule的描述`description`，名称`name`，条件`when`以及满足条件之后需要执行的行为`then`
   * rule yml的形式定义rule
     * 定义一个yml文件，同样的，`MVELRuleFactory`也支持`json`格式的文件
-    ```yaml
-    ---
-    name: non adult rule
-    description: when age is less than or equal 18, then mark as non-adult
-    priority: 1
-    condition: "person.age <= 18"
-    actions:
-    - "person.setAdult(false);"
-    ---
-    name: adult rule
-    description: when age is greater than 18, then mark as adult
-    priority: 2
-    condition: "person.age > 18"
-    actions:
-    - "person.setAdult(true);"
-    ```
+    * 第一个🌰 是在一个yml文件中定义了多个规则
+      ```yaml
+      ---
+      name: non adult rule
+      description: when age is less than or equal 18, then mark as non-adult
+      priority: 1
+      condition: "person.age <= 18"
+      actions:
+      - "person.setAdult(false);"
+      ---
+      name: adult rule
+      description: when age is greater than 18, then mark as adult
+      priority: 2
+      condition: "person.age > 18"
+      actions:
+      - "person.setAdult(true);"
+      ```
     * 加入依赖
     ```xml
      <dependency>
@@ -137,7 +139,28 @@
       ```
       * [MVEL语法](https://github.com/imona/tutorial/wiki/MVEL-Guide#foreach)
       * 如果遇到以下的错误 ```[Error: could not access field: org.zqf.easyruledemo.Person.age]```
-        * 我的解决方法是将`Person`变成一个公有的方法 <strong style="color:yellow">如果不是公有的方法不能构造吗？</strong>
+        * 我的解决方法是将`Person`变成一个公有的方法 <strong style="color:yellow">原因是我当时第一次写的时候，是将`Person`定义在了当前的测试类中，所以当前class的级别为`default`，使用的范围是在当前包下。但是当easy rule的要使用person类中的方法时，因为没有在同一个包下，所以访问不了。</strong>
+    * 支持组合规则
+      * UnitRuleGroup，在yml中定义`compositeRuleType`为`UnitRuleGroup`，被定义的规则需要都被匹配上才能被选择上，如果有一个**子规则**没有匹配上，那么结果仍然不会被匹配
+      ```yaml
+      name: adult check composing rule
+      ompositeRuleType: UnitRuleGroup
+      riority: 1
+      omposingRules:
+       name: adult
+       description: If the age is more than 18
+       priority: 1
+       condition: "person.age > 18"
+       actions:
+       - "person.setAdult(true);"
+       name: foo-adult
+       description: If the name is 'foo'
+       priority: 1
+       condition: "person.name == 'foo'"
+       actions:
+       - "person.setAdult(true);"
+      ```
+      * `ConditionalRuleGroup`
   * spring boot 项目，使用注解，注入Rules
     * 定义一个Rule的configuration class，对此使用注解`@Configuration`，spring boot的bean容器就会在启动的时候，将当前父类`BasicVegetableRule`下所有子类都加载到入参`basicVegetableRules`中，当然如果想要使用java的bean的便利，那么需要加载的子类也需要加上注解`@Component`。这样在spring boot项目启动的时候就会将其扫描到这个`Set`中。`Rule`是一个<strong style='color:RED'>interface</strong>，所以所有的实现都可以转成其本身。
     ```java
@@ -165,7 +188,7 @@
                                         .skipOnFirstNonTriggeredRule(false);
        ``` 
   * `setSkipOnFirstAppliedRule`，这个配置决定了是否匹配到第一个rule就直接返回了
-  * `isSkipOnFirstNonTriggeredRule`，跳过第一个没有被触发的规则，<strong style="color:yellow">什么是没有触发的规则？</strong>
+  * `isSkipOnFirstNonTriggeredRule`，当第一个规则没有被匹配成功的时候，如果当前值设置为`true`的时候，将不会执行其他的规则，一般可以设置为`false`，我理解这个是给最高优先级的规则匹配，如果第一个匹配不上，不用关心其他的规则
   * `skipOnFirstFailedRule`，当第一个匹配到的规则失败的时候，将会返回匹配到的下一个规则
   * 创建ruleEngine `DefaultRulesEngine rulesEngine = new DefaultRulesEngine(parameters);`
   * 定义Rule，并注册rule
@@ -182,3 +205,6 @@
     ```
   * 最后定义一个通用的方法，使用RuleEngine的`fire`方法，来触发规则匹配
     `rulesEngine.fire(rules, facts);`
+
+## Q&A
+* 如果两个rule的优先级相同，rule在Rules的顺序是什么呢？

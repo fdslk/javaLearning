@@ -1,0 +1,16 @@
+name: adult check composing rule
+compositeRuleType: UnitRuleGroup
+priority: 1
+composingRules:
+  - name: adult
+    description: If the age is more than 18
+    priority: 1
+    condition: "person.age > 18"
+    actions:
+      - "person.setAdult(true);"
+  - name: foo-adult
+    description: If the name is 'foo'
+    priority: 1
+    condition: "person.name == 'foo'"
+    actions:
+      - "person.setAdult(true);"
