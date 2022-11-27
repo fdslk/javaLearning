@@ -148,3 +148,19 @@
   * index对应的所有的字段的最大数量
   * index对应的mapping的最大深度
 * 8.0以上的es不在支持mapping type，
+## text analysis（文字分析）
+* 这个feature是用来处理非结构化数据，将非结构化数据处理成结构化的数据（这样的结构化数据是被优化的，利于search的结构）<font color="yellow" size=3>**什么样的数据时非结构化的数据，将源数据做了处理，什么样的数据会被当做非结构化的数据**</font>
+* 对于这个功能，只要在用户搜索`text`类型的数据时，才会被触发
+* 在text analysis的过程中，es做了两件事 
+  * tokenization，将一个存入的string index分解成多个词，这样，用不同的组合搜索都能够搜索到匹配的词条
+  * normalization，有些词的大小写不一样，或者存入的词是单数，但是实际上查询的是负数，还有就是同义词的匹配
+    * 那么在存储的时候就会做一些统一化的处理
+      * 词语都做lowercase的处理，来保持一致
+      * 有单数，也有负数的时候，统一将index设置为单数来处理
+      * 对于同义词，用一个有语义相似的index进行统一处理
+  * 以上两种操作都是es的内置操作，如果想使用一些个性化的操作，可以通过配置`build-in-analyzer`来实现
+* 基本概念
+  * 对于所有的analyzer都是由是哪个较低level的内置模块组成
+    * character filters（optional），将非通用的字符转换成具有同等含义的通用字符，比如将`Hindu-Arabic`转换成`Arabic-Latin`，还可以过滤一些有其他意义的特殊字符
+    * tokenizers（required），将一个phrase拆分成一个个的单词
+    * token filters （optional），将词条进行lowercase处理，remove stop word，etc
