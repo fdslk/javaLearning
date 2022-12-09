@@ -23,6 +23,7 @@
   * [how to use rule engine `easy rule`]
     * [非spring boot](https://github.com/Fdslk/javaLearning/tree/master/code/easyRule)
     * [spring boot](https://github.com/Fdslk/javaLearning/tree/master/code/easyruledemo)
+  * [ffmpeg](https://github.com/Fdslk/javaLearning/tree/master/code/ffmpeg_demo)
 
 * java 测试
   * TestNg
