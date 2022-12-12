@@ -23,7 +23,7 @@
   * linux 
   * Windows
 ## How to use its sub-component tool
-* ffmprobe
+* ffprobe
   * When you install the ffmpeg in brew, you can use ffmpeg, ffmprobe or ffmplay directly. For the part, you will use ffmprobe to analyze the video or audio resource.
   * Input the following command, `ffprobe xxxx.mp4`, you will get the following result with log.
     <img width="1293" alt="image" src="https://user-images.githubusercontent.com/96409339/205582566-4f4bdc33-242e-4884-ad27-8b68c20fc433.png">
@@ -139,6 +139,38 @@
           * get first audio, with parameter `-map 0:a:0`
       * You also can process multiple data together, integration some video, layout(logo), audio together
         * `ffmpeg -v error -y -i bunny_1080p_60fps.mp4 -i bullfinch.mov -to 1 -map 0:v:0 -map 1:a:0 bunny_1080p_60fps-1s-mix.mp4`
+    * filter
+      * do some change for the media, the common library is `libavfilter`
+      * syntax, filter=key1=values:key2=value2
+        * eg: scale filter scale=width=1920:height=1080
+          * different filter labels are used `; [semicolon sign]` to split each others. <font color=red size=3>In my opinion, I think that semicolon sign is used to do the textual separation, which the filter is more readable.</font>
+          * for one filter with multiple options, using `: [colon sign]` to split each other 
+          * using comma `,` to split the different filter
+      * it can be labeled, which can be referred for later option
+      * filter graph
+        * with param `-vf` process graphs with **single** input and output, especially operate video resource
+        * eg: 
+        ```
+        ffmpeg -v error -i <medida name with extension> -vf
+          "split[bg][ol]; // split the media with the same two parts
+          [bg]scale=width=1920:height=1080,format=gray[bg_output];
+          [ol]scale=-1:480,hflip[ol_output];
+          [bg_output][ol_output]overlay=x=W-w:y=(H-h)/2" <ouput file > // combine two outputs togther.
+        ```
+        * with param `-filter-complex`, you can manipulate all the streams, like video, audio and picture.
+          ```
+          ffmpeg -v error -y -i bullfinch.mov -i logo.png -filter_complex 
+          "[1:v]scale=-1:200[s_logo];
+          [0:v][s_logo]overlay=x=W-w-50:y=H-h-50,split=2[sd_in][hd_in];
+          [sd_in]scale=-2:480[sd];[hd_in]scale=-2:1080[hd]"
+          -map \[sd\] bully-sd.mp4 -map \[hd\] bully-hd.mp4
+          ```
+          * tips: If you want to use it in <font color=red>**zsh**</font>, you should add escape symbol before the special character, like `'[', ']'`
+        * with param `-af`, you can do some editions on audio stream **only for one** input and output
+        * common filter
+          * scale, one input and one output
+          * split, one input and multiple output
+          * overlay, multiple input and one output 
 ## Media Concepts
 * image
   * pixel, is a 2D point, has color RGB or YUV, alpha value transparency
