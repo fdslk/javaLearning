@@ -164,3 +164,10 @@
     * character filters（optional），将非通用的字符转换成具有同等含义的通用字符，比如将`Hindu-Arabic`转换成`Arabic-Latin`，还可以过滤一些有其他意义的特殊字符
     * tokenizers（required），将一个phrase拆分成一个个的单词
     * token filters （optional），将词条进行lowercase处理，remove stop word，etc
+## Index templates
+* 用来定义数据存储的格式
+* index模板分为，index templates&component templates
+  * index template: 就和通俗易懂，该template使用的的范围主要是当前的index，，index中可以使用多个component template，添加优先级，这个功能主要用于如果匹配到几个相同的template时，可以根据优先级来定使用哪个
+  * component template：类似于组件，并不属于哪一个特定的template
+## data streams
+* 
