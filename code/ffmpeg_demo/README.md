@@ -170,7 +170,29 @@
         * common filter
           * scale, one input and one output
           * split, one input and multiple output
-          * overlay, multiple input and one output 
+          * overlay, multiple input and one output
+    * encoding
+      * what is kind of thing should we take into consideration? 
+        * compression
+        * quality vs size
+        * stream vs _post-production_
+        * target application
+        * compatibility, check the codec is supported by the container
+      * converting
+        * If you want to transfer one container to another and don't set the specific codec method, ffmpeg will set a default codec (suitable one).
+          * eg: `ffmpeg -v error -y -i bullfinch.mov transcoded.mxf`
+          * with parameter, `-vcodec <codec name>` to set specific video codec method
+            * `ffmpeg -encoders`, list all the useful codec method
+          * with parameter `-avodec`, set the specific audio codec method
+        * detail of AVC short for advanced video codec, H.264
+          * codec library: libx264
+          * profile, baseline, main, high, it is optional
+          * Rate control (edit the bitrate, effect the video quality)
+            * with parameter `-crf` 
+            * CRF: constant quality, variable bitrate, focus on high quality crf 0-51, the higher, the worse quality 
+            * Two-pass ABR, this is a quantitative option, with parameter `-b:v 2M`, which means that the bitrate is set as 2Mbps
+              * tips, it cannot give you very accurate bitrate, therefore you can use two pass method. like `-b:v 2M -pass 1 -f null /dev/null`, then `-b:v 2M -pass 2 filename`. The result of the first step will be saved into the statics
+            * preset, which is used to control the speed of compression, the quicker, the bigger compression file you get
 ## Media Concepts
 * image
   * pixel, is a 2D point, has color RGB or YUV, alpha value transparency
