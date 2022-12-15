@@ -13,6 +13,61 @@
   * ffmpeg, itself is a command line tool which is used to process the video or audio resource
   * ffplay, which is a minimal video player, you can use it play a large wide of video format
   * ffprobe, which is used to extract video or audio information
+## Media Concepts
+* image
+  * pixel, is a 2D point, has color RGB or YUV, alpha value transparency
+  * resolution, the quality of the image of the number of pixel of the image
+  * Aspect Ratio, the radio of the width and height
+* Audio
+  * smallest digital representation of a sound
+  * 8/16/24/32 bit value, more bits means high quality video source
+  * audio frequency, how many samples during the per second, the higher, the higher quality
+  * audio channel, which means that several audios will be played together
+    * for example, one audio channel is named 'Mono', two is named 'Stereo' and both of them are called `channel layouts`
+  * audio track, organize different audio channels
+    * for example, an audio can obtain multilingual channel, an English channel or a French chanel, and also it can take a background chanel, some of them can be mixed
+* Video
+  * sequence of images, has the time duration, Each image is called a frame
+  * Video frame rate(FPS), Frame per second
+  * video compression, not very clear about the concept? remove redundant information, Spatial redundancy (**within frame**), Temporal redundancy (**across frame**). <font color=red>**How to make it?**</font>
+* Codec & Container
+  ![the overview of Codec and Container](https://user-images.githubusercontent.com/96409339/206092175-0a9d1d2c-a173-4407-93a8-7b1e4b306db2.png)
+  * Codec
+    * encode, because video is a very big file, if we transfer it directly, which is an impractical idea. and decode is used to play the video
+    * some encode algorithm
+      * video, H.264, H.265, VP9, Prores, DNxHd,
+      * audio, PCM, AAC, MP3
+      * the benefits of different codec algorithm
+  * Container
+    * use to package or wrapper a media file
+    * format
+      * video, MP4, MXF, QT/MOV, MKV
+      * audio, WAV, M4A
+* Transcoding
+  * transfer one codec to another one
+  * why we need transcode, because it depends on different situation, sometimes, we need take care of quality, being smaller during the transporting in the internet
+  * using scenario
+    * Transmuxing, From one container to another
+    * thumbnail generation, preview image, search hit, hover-scrubbing on the web page, poster frame
+    * Frame rate conversion
+      * support different TV standards
+      * higher FPS: preserve slow motion quality for editing
+      * lower FPS: playback or streaming
+    * Bitrate conversion
+      * quality the higher bitrate the higher quality
+      * smaller storage space
+      * support different network bandwidth
+    * change GOP size
+      * good for editing based on I-frame (keyframe) only, 保持一个关键帧，然后可以继续操作，就可以得到动画
+      * good for compression and streaming based on long GOP
+    * overlay
+      * logo ....
+    * subtitle/capture
+    * timecode
+    * covert video resolution
+    * Audio volume adjustment
+    * Audio mixing eg: mix the person speaking voice and the background voice
+    * audio resampling, changing the frequency
 ## How to setup it?
 * how to get it?
   * No official builds
@@ -22,6 +77,7 @@
   * macOS `brew install ffmpeg`
   * linux 
   * Windows
+
 ## How to use its sub-component tool
 * ffprobe
   * When you install the ffmpeg in brew, you can use ffmpeg, ffmprobe or ffmplay directly. For the part, you will use ffmprobe to analyze the video or audio resource.
@@ -193,58 +249,34 @@
             * Two-pass ABR, this is a quantitative option, with parameter `-b:v 2M`, which means that the bitrate is set as 2Mbps
               * tips, it cannot give you very accurate bitrate, therefore you can use two pass method. like `-b:v 2M -pass 1 -f null /dev/null`, then `-b:v 2M -pass 2 filename`. The result of the first step will be saved into the statics
             * preset, which is used to control the speed of compression, the quicker, the bigger compression file you get
-## Media Concepts
-* image
-  * pixel, is a 2D point, has color RGB or YUV, alpha value transparency
-  * resolution, the quality of the image of the number of pixel of the image
-  * Aspect Ratio, the radio of the width and height
-* Audio
-  * smallest digital representation of a sound
-  * 8/16/24/32 bit value, more bits means high quality video source
-  * audio frequency, how many samples during the per second, the higher, the higher quality
-  * audio channel, which means that several audios will be played together
-    * for example, one audio channel is named 'Mono', two is named 'Stereo' and both of them are called `channel layouts`
-  * audio track, organize different audio channels
-    * for example, an audio can obtain multilingual channel, an English channel or a French chanel, and also it can take a background chanel, some of them can be mixed
-* Video
-  * sequence of images, has the time duration, Each image is called a frame
-  * Video frame rate(FPS), Frame per second
-  * video compression, not very clear about the concept? remove redundant information, Spatial redundancy (**within frame**), Temporal redundancy (**across frame**). <font color=red>**How to make it?**</font>
-* Codec & Container
-  ![the overview of Codec and Container](https://user-images.githubusercontent.com/96409339/206092175-0a9d1d2c-a173-4407-93a8-7b1e4b306db2.png) 
-  * Codec
-    * encode, because video is a very big file, if we transfer it directly, which is an impractical idea. and decode is used to play the video
-    * some encode algorithm
-      * video, H.264, H.265, VP9, Prores, DNxHd, 
-      * audio, PCM, AAC, MP3
-      * the benefits of different codec algorithm
-  * Container
-    * use to package or wrapper a media file
-    * format
-      * video, MP4, MXF, QT/MOV, MKV
-      * audio, WAV, M4A
-* Transcoding
-  * transfer one codec to another one
-  * why we need transcode, because it depends on different situation, sometimes, we need take care of quality, being smaller during the transporting in the internet
-  * using scenario
-    * Transmuxing, From one container to another
-    * thumbnail generation, preview image, search hit, hover-scrubbing on the web page, poster frame
-    * Frame rate conversion
-      * support different TV standards
-      * higher FPS: preserve slow motion quality for editing
-      * lower FPS: playback or streaming
-    * Bitrate conversion
-      * quality the higher bitrate the higher quality
-      * smaller storage space
-      * support different network bandwidth
-    * change GOP size
-      * good for editing based on I-frame (keyframe) only, 保持一个关键帧，然后可以继续操作，就可以得到动画
-      * good for compression and streaming based on long GOP
-    * overlay
-      * logo ....
-    * subtitle/capture
-    * timecode
-    * covert video resolution
-    * Audio volume adjustment
-    * Audio mixing eg: mix the person speaking voice and the background voice
-    * audio resampling, changing the frequency
+    * Streaming
+      * Basic Concept
+        * The device connect to the internet, then you can get the media resource from the internet transportation, rather than download the media directly. This process can be called as streaming.
+        * And the streaming can be consumed without any waiting just watch it directly when your device connects to the internet
+          ![overview of the streaming get or provide](https://user-images.githubusercontent.com/6279298/207742871-faf39080-f180-445b-b10d-eb4f73df3f54.png)
+        * Streaming playback, it is a mechanism for keep a comfortable watching experience.
+          * Playable instantly, without downloading the whole media files
+          * Seekable, when you choose the different timeline, the media can be played based on the correct timeline rather than play it from the start
+          * Adaptive, based on different network situation (<font size=3 color=red>adaptive streaming bitrate, how to make it? not only the network situation, but also the player window size</font>)
+            * In my opinion, it will start with a file extended with `m3u8`. Actually, the following playable videos are separated very small parts whose format is `ts`. When the network becomes worse, it will retrieve some low bitrate media resource until the network turn to the good situation.
+        * Streaming protocol
+          * different protocol is suitable to different situations, some are applicable to ingest, some are for distribution.
+            * RTMP
+              * real-time-messaging protocol
+              * based on TCP
+              * low latency
+              * stop updating, so not support to latest codec method
+              * required flash plugin
+              * is popular to live-streaming ingest
+            * HTTP
+              * widest reach
+              * TCP based
+              * unlikely to be blocked anywhere
+              * support its native player `HTML5 video`, no need to add extra plugin, like flash
+              * native support HLS and MPEG-DASH adaptive method
+              * good at distribution, not widely used to ingest
+            * SRT
+              * secure reliable transport
+              * based on UDP based
+              * faster than RTMP
+              * cannot support any browsers, because its based on UDP, but it's extremely applicable to ingest streaming
