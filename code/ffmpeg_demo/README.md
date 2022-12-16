@@ -280,3 +280,28 @@
               * based on UDP based
               * faster than RTMP
               * cannot support any browsers, because its based on UDP, but it's extremely applicable to ingest streaming
+        * Progressive Download
+          * The progressive download method downloads and caches video on the viewer’s device. A short period of time is required to buffer and cache the beginning of the media file before it starts playing
+          * single-file media
+            * advantage
+              * Not segmented
+              * Easier to handle
+              * native browser support
+              * copy and download easily, you can send the whole file to other services
+          * container formats
+            * MP4, WebM, Ogg, these formats are supported by native browser
+          * The index
+            * It's used to look up the media data of a time aor frame, just like a table or a map to save the media information
+            * It will be written into the end of the mp4 file
+            * Similar to Apple player format (QuickTime, MOV)
+            * the data will get some hierarchical sections, the section are atom/box, atom will be set into the stream during the codec period
+              ![what is the atom](https://user-images.githubusercontent.com/6279298/208073595-5d752c26-a57a-4b2c-a9f0-1f691431aff9.png)
+              ![the category of atoms](https://user-images.githubusercontent.com/6279298/208075202-567b91f5-7b32-4472-b825-e8e89446d1b5.png)
+          * fast-started
+            * ![fast-started structure](https://user-images.githubusercontent.com/6279298/208084190-41a02855-edb8-4644-b2af-4399edb8563f.png)
+            * This will let the video be played gradually rather than download the whole file once time
+            * with command `ffmpeg -v trace -i <video name>`, you can get the verbose information
+            * pick atom `ffmpeg -v trace -i fast-start.mp4 2>&1 | grep -e type:\'mdat\' -e type:\'moov\'`
+            * convert to a fast-started media ` ffmpeg -i fast-start.mp4 -movflags +faststart -c copy test-fast-started.mp4`
+              * option `-movflag`
+
