@@ -259,49 +259,71 @@
           * Seekable, when you choose the different timeline, the media can be played based on the correct timeline rather than play it from the start
           * Adaptive, based on different network situation (<font size=3 color=red>adaptive streaming bitrate, how to make it? not only the network situation, but also the player window size</font>)
             * In my opinion, it will start with a file extended with `m3u8`. Actually, the following playable videos are separated very small parts whose format is `ts`. When the network becomes worse, it will retrieve some low bitrate media resource until the network turn to the good situation.
-        * Streaming protocol
-          * different protocol is suitable to different situations, some are applicable to ingest, some are for distribution.
-            * RTMP
-              * real-time-messaging protocol
-              * based on TCP
-              * low latency
-              * stop updating, so not support to latest codec method
-              * required flash plugin
-              * is popular to live-streaming ingest
-            * HTTP
-              * widest reach
-              * TCP based
-              * unlikely to be blocked anywhere
-              * support its native player `HTML5 video`, no need to add extra plugin, like flash
-              * native support HLS and MPEG-DASH adaptive method
-              * good at distribution, not widely used to ingest
-            * SRT
-              * secure reliable transport
-              * based on UDP based
-              * faster than RTMP
-              * cannot support any browsers, because its based on UDP, but it's extremely applicable to ingest streaming
-        * Progressive Download
-          * The progressive download method downloads and caches video on the viewer’s device. A short period of time is required to buffer and cache the beginning of the media file before it starts playing
-          * single-file media
-            * advantage
-              * Not segmented
-              * Easier to handle
-              * native browser support
-              * copy and download easily, you can send the whole file to other services
-          * container formats
-            * MP4, WebM, Ogg, these formats are supported by native browser
-          * The index
-            * It's used to look up the media data of a time aor frame, just like a table or a map to save the media information
-            * It will be written into the end of the mp4 file
-            * Similar to Apple player format (QuickTime, MOV)
-            * the data will get some hierarchical sections, the section are atom/box, atom will be set into the stream during the codec period
-              ![what is the atom](https://user-images.githubusercontent.com/6279298/208073595-5d752c26-a57a-4b2c-a9f0-1f691431aff9.png)
-              ![the category of atoms](https://user-images.githubusercontent.com/6279298/208075202-567b91f5-7b32-4472-b825-e8e89446d1b5.png)
-          * fast-started
-            * ![fast-started structure](https://user-images.githubusercontent.com/6279298/208084190-41a02855-edb8-4644-b2af-4399edb8563f.png)
-            * This will let the video be played gradually rather than download the whole file once time
-            * with command `ffmpeg -v trace -i <video name>`, you can get the verbose information
-            * pick atom `ffmpeg -v trace -i fast-start.mp4 2>&1 | grep -e type:\'mdat\' -e type:\'moov\'`
-            * convert to a fast-started media ` ffmpeg -i fast-start.mp4 -movflags +faststart -c copy test-fast-started.mp4`
-              * option `-movflag`
-
+      * Streaming protocol
+        * different protocol is suitable to different situations, some are applicable to ingest, some are for distribution.
+          * RTMP
+            * real-time-messaging protocol
+            * based on TCP
+            * low latency
+            * stop updating, so not support to latest codec method
+            * required flash plugin
+            * is popular to live-streaming ingest
+          * HTTP
+            * widest reach
+            * TCP based
+            * unlikely to be blocked anywhere
+            * support its native player `HTML5 video`, no need to add extra plugin, like flash
+            * native support HLS and MPEG-DASH adaptive method
+            * good at distribution, not widely used to ingest
+          * SRT
+            * secure reliable transport
+            * based on UDP based
+            * faster than RTMP
+            * cannot support any browsers, because its based on UDP, but it's extremely applicable to ingest streaming
+      * Progressive Download
+        * The progressive download method downloads and caches video on the viewer’s device. A short period of time is required to buffer and cache the beginning of the media file before it starts playing
+        * single-file media
+          * advantage
+            * Not segmented
+            * Easier to handle
+            * native browser support
+            * copy and download easily, you can send the whole file to other services
+        * container formats
+          * MP4, WebM, Ogg, these formats are supported by native browser
+        * The index
+          * It's used to look up the media data of a time aor frame, just like a table or a map to save the media information
+          * It will be written into the end of the mp4 file
+          * Similar to Apple player format (QuickTime, MOV)
+          * the data will get some hierarchical sections, the section are atom/box, atom will be set into the stream during the codec period
+            ![what is the atom](https://user-images.githubusercontent.com/6279298/208073595-5d752c26-a57a-4b2c-a9f0-1f691431aff9.png)
+            ![the category of atoms](https://user-images.githubusercontent.com/6279298/208075202-567b91f5-7b32-4472-b825-e8e89446d1b5.png)
+        * fast-started
+          * ![fast-started structure](https://user-images.githubusercontent.com/6279298/208084190-41a02855-edb8-4644-b2af-4399edb8563f.png)
+          * This will let the video be played gradually rather than download the whole file once time
+          * with command `ffmpeg -v trace -i <video name>`, you can get the verbose information
+          * pick atom `ffmpeg -v trace -i fast-start.mp4 2>&1 | grep -e type:\'mdat\' -e type:\'moov\'`
+          * convert to a fast-started media ` ffmpeg -i fast-start.mp4 -movflags +faststart -c copy test-fast-started.mp4`
+            * option `-movflag`
+      * Adaptive Streaming
+        * Sometime, the outside condition is changeable, for single-quality media, it just only has one quality, single resolution, bitrate choice
+        * adaptive resolution, different screen size the stream will choose some related stream. But if the screen resolution is greater than the low standard resolution and less than the high standard resolution, it will still use the higher one, take the 560p as an example, the play will still play the 720p media.
+        * <font color=red>ffmpeg can do it?</font>
+        * how it work
+          * adaptive streaming solution
+            * HLS, http live streaming
+              * codec (H.264 avc H.265 havc) 
+              * container (TS, fMP4, Fragmented MP4)
+              * manifest
+                * m3u8 
+                  * master playlist is used to point the media playlist
+                  * media playlist list the individual the segments of ts file in sequence
+            * DASH, dynamic adaptive streaming over http
+              * MPEG-DASH (mp4) 
+              * codec freedom, H.264, H.265, VP9, etc. 
+              * container only fMP4
+              * manifest (mdp, media presentation description, format is `xml`)
+            * common characteristics
+              * both can split media into several small segments
+        * the facts need to consider when encoding the media to adaptive streaming 
+          * frame type
+          * ![concept of frame](https://user-images.githubusercontent.com/6279298/209314973-8a7aa325-a305-42de-957a-ef14fd9966fe.png)
