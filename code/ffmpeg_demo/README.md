@@ -327,3 +327,24 @@
         * the facts need to consider when encoding the media to adaptive streaming 
           * frame type
           * ![concept of frame](https://user-images.githubusercontent.com/6279298/209314973-8a7aa325-a305-42de-957a-ef14fd9966fe.png)
+          * What is the self-contained in GOPs
+        * how to use ffmpeg to convert the media into HLS or DASH
+          * HLS, TS, A+V, the format of playlist is `m3u8` and the segement is `ts` 
+          ```yaml
+           ffmpeg -y -i bunny_1080p_60fps.mp4 -to 10 \
+           -filter_complex "[0:v]fps=30,split=3[720_in][480_in][240_in];[720_in]scale=-2:720[720_out];[480_in]scale=-2:480[480_out];[240_in]scale=-2:240[240_out]" \
+           -map \[720_out\] -map \[480_out\] -map \[240_out\] -map 0:a -map 0:a -map 0:a \
+           -b:v:0 3500k -maxrate:v:0 3500k -bufsize:v:0 3500k \
+           -b:v:1 1690k -maxrate:v:1 1690k -bufsize:v:1 1690k \
+           -b:v:2 326k -maxrate:v:2 326k -bufsize:v:2 326k \
+           -b:a:0 128k \
+           -b:a:1 96k \
+           -b:a:2 64k \
+           -x264-params "keyint=60:min-keyint=60:scenecut=0" \
+           -var_stream_map "v:0,a:0,name:720-4M v:1,a:1,name:480-2M v:2,a:2,name:240p-500k" \
+           -hls_time 2 \
+           -hls_list_size 0 \
+           -hls_segment_filename adaptive-%v-%03d.ts \
+           -master_pl_name adaptive.m3u8 \
+           adaptive-%v.m3u8
+          ```
