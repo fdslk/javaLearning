@@ -360,3 +360,51 @@
           * HLS, fMP4
           * DASH, fMP4
           * HLS+DASH, fMP4
+            * ![HLS DASH mixed pattern](https://user-images.githubusercontent.com/6279298/210923276-23ba054e-eec4-4120-9ac0-403ee39494b7.png) 
+            * ```yaml
+              ffmpeg -y -i bullfinch.mov -to 10 \                                
+               -filter_complex "[0:v]fps=30,split=3[720_in][480_in][240_in];[720_in]scale=-2:720[720_out];[480_in]scale=-2:480[480_out];[240_in]scale=-2:240[240_out]" \
+               -map \[720_out\] -map \[480_out\] -map \[240_out\] -map 0:a \
+               -b:v:0 3500k -maxrate:v:0 3500k -bufsize:v:0 3500k \
+               -b:v:1 1690k -maxrate:v:1 1690k -bufsize:v:1 1690k \
+               -b:v:2 326k -maxrate:v:2 326k -bufsize:v:2 326k \
+               -b:a:2 128k \
+               -x264-params "keyint=60:min-keyint=60:scenecut=0" \
+               -hls_playlist 1 \
+               -hls_master_name adaptive.m3u8 \
+               -seg_duration 2 \
+               adaptive.mpd  
+              ```     
+  * example of manipulate video
+    * Trimming
+      * `ffmpeg -y -v error -i nature.mp4 -ss 00:03:55 -to 240 bear.mp4`
+        * `-v [flags+]loglevel` set the processing log error verbose
+        * `-ss` set up the start second
+        * `-to` set up the total duration
+        * `-t` set up the segment duration, take the above command as an example, if you want to achieve the same behavior, you can use `-ss 00:03:55 -t 5`
+    * Merge
+      * define a list file
+        * ```text
+          file 'bear.mp4'
+          file 'flower.mp4'
+          ```
+      * `ffmpeg -y -v error -f concat -i list.txt merge.mp4`
+    * Thumbnail
+      * `ffmpeg -v error -i bullfinch.mov -vframes 1 bullfinch-poster-image.jpg`
+        * `-vframes` set up the number of frames
+        * You also can use filter during this processing, by the following command
+          * `ffmpeg -v error -i bullfinch.mov -vframes 1 -vf scale=320:180 bullfinch-poster-image-thumbnail.jpg`
+        * if you don't want to output the first frame as the thumbnail, you can add the `-ss` before the `-vframes`
+        * If you want to output multiple frame pictures, you can run the following command
+          * `ffmpeg -v error -i bullfinch.mov  -vf fps=1,scale=320:180 bullfinch-thumbnail-%02d.jpg`
+          * `-%02d` is a template syntax, which can be used to generate multiple file
+    * Scaling
+      * resize the media or photo resource
+        * `-vf scale=-2:480`, **minus two** means we want to keep the aspect ratio
+        * force original aspect ratio option, `force_original_aspect_ratio`
+        * If you can want to keep the desired window size, you can add the [pad option](https://ffmpeg.org/ffmpeg-all.html#Examples-140): `pad=640:480:(ow-iw)/2:(oh-oh)/2`, with this option, you can output the video in the desired bound box.
+    * [Overlay](https://ffmpeg.org/ffmpeg-all.html#Examples-139)
+      * `ffmpeg -v error -y -i (video) -i (pic) -filter_complex "overlay" output_file.extension`
+      * adjust the transparency of the overlay `-filter_complex "[1:v]colorchannelmixer=aa=0.4[transparent_log];[0:v][transparent_log]overlay"`
+        * `aa` Adjust contribution of input red, green, blue and alpha channels for output alpha channel. Default is 1 for aa, and 0 for ar, ag and ab.
+      * multiple overlay, overlay the video with logo at first, then set a label to them. Overlaying the previous output and the third input video
