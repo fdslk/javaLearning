@@ -408,3 +408,19 @@
       * adjust the transparency of the overlay `-filter_complex "[1:v]colorchannelmixer=aa=0.4[transparent_log];[0:v][transparent_log]overlay"`
         * `aa` Adjust contribution of input red, green, blue and alpha channels for output alpha channel. Default is 1 for aa, and 0 for ar, ag and ab.
       * multiple overlay, overlay the video with logo at first, then set a label to them. Overlaying the previous output and the third input video
+    * Drawing text and or timeCode
+      * fixed text when play
+        * `ffplay bullfinch.mov -v error -an -vf "drawtext=text=Bird"`
+          * ![fixed draw text](https://user-images.githubusercontent.com/6279298/211193197-b5472769-c6da-4b7a-8758-a0c4ca25849e.png)
+        * with parameter `x` and `y`, you can adjust its position, like `ffplay bullfinch.mov -v error -an -vf "drawtext=fontfile=Example.ttf:text=Bird:x=(w-text_w)/2:y=(h-text_h)/2:fontsize=60"`
+          * ![Screen Shot 2023-01-08 at 7 22 05 PM](https://user-images.githubusercontent.com/6279298/211193438-39bdde10-ab6f-45d9-85ba-a531bc880a8a.png)
+      * moving text when play
+        * with parameter `t` which represents the time, if you want the text from the top to the center you can use the following command:
+          * `y=t*50`
+          * Generally speaking, If you want to move the text from the right to the left, you can add the parameter `x=(w-text_w)/2-100*t` 
+      * add time code
+        * default
+          * `ffplay bullfinch.mov -v error -an -vf "drawtext=fontfile=Example.ttf:text=Bird:x=(w-text_w)/2:y=(h-text_h)/2:fontsize=60:timecode='00\:00\:00\:00':rate='24000/1001'`
+        * with boxColor
+          * `:box=1: boxcolor=red@0.2`
+          * ![time code with color box](https://user-images.githubusercontent.com/6279298/211194118-45ede122-c2b4-49c7-92e7-28342c21644b.png)
