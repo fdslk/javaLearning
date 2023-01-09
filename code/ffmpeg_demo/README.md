@@ -431,3 +431,7 @@
         * with the following command you can split the whole stream into different files `ffmpeg -v error -y -i two-stereo-tracks.m4a -filter_complex "amerge=inputs=2,asplit=4[all0][all1][all2][all3];[all0]pan=mono|c0=c0[ch0];[all1]pan=mono|c0=c1[ch1];[all2]pan=mono|c0=c2[ch2];[all3]pan=mono|c0=c3[ch3]" -map \[ch0\] ch0.m4a -map \[ch1\] ch1.m4a -map \[ch2\] ch2.m4a -map \[ch3\] ch3.m4a`
           * with the filter `asplit` like `[in] asplit=<output number> [out0][out1][out2]`, you can get number of output
           * with the filter [`pan`](https://www.ffmpeg.org/ffmpeg-all.html#pan-1), you can manipulate the audio
+    * mix channels
+      * with `ffmpeg -v error -y -i ch0.m4a -i ch1.m4a -i ch2.m4a -i ch3.m4a -filter_complex "amerge=inputs=4" mix_four_in_one_channel.m4a`
+      * with the filter `amix=inputs=<number of input>`, it can work, but the mixed audio will drop down the volume
+      * with `"amerge=inputs=4,pan=mono|c0=c0+c1+c2+c3"`, you can avoid this issue
