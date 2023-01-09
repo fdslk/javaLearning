@@ -424,3 +424,10 @@
         * with boxColor
           * `:box=1: boxcolor=red@0.2`
           * ![time code with color box](https://user-images.githubusercontent.com/6279298/211194118-45ede122-c2b4-49c7-92e7-28342c21644b.png)
+  * example of manipulation audio
+    * extract channels
+      * some channels play the voice, and some channels play the background music
+        * with filter `amerge=inputs=2`, you can merge the whole stream to a one stream with multiple channels
+        * with the following command you can split the whole stream into different files `ffmpeg -v error -y -i two-stereo-tracks.m4a -filter_complex "amerge=inputs=2,asplit=4[all0][all1][all2][all3];[all0]pan=mono|c0=c0[ch0];[all1]pan=mono|c0=c1[ch1];[all2]pan=mono|c0=c2[ch2];[all3]pan=mono|c0=c3[ch3]" -map \[ch0\] ch0.m4a -map \[ch1\] ch1.m4a -map \[ch2\] ch2.m4a -map \[ch3\] ch3.m4a`
+          * with the filter `asplit` like `[in] asplit=<output number> [out0][out1][out2]`, you can get number of output
+          * with the filter [`pan`](https://www.ffmpeg.org/ffmpeg-all.html#pan-1), you can manipulate the audio
