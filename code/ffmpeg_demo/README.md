@@ -154,7 +154,7 @@
   * with the parameter `-x , -y`, you can control the size of the video window
   * with the parameter `-noborder`, you can remove the border of the video window
   * with the parameter `-top -left`, you can control the position of the video window
-  * with the parameter '-fs', you can get the full screen video window
+  * with the parameter `-fs`, you can get the full screen video window
   * with the parameter `-an`, you can disable the audio
   * with the parameter `vn`, you can disable the video
     * tips, you can press key `W` to switch the show-mode
