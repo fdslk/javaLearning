@@ -6,18 +6,18 @@
 * 给电脑加一个hub，然后把U盘插到hub上&nbsp;&nbsp;&nbsp;&nbsp;&#10006; 
 * 尝试不同的Mac&nbsp;&nbsp;&nbsp;&nbsp;&#10006;
 
-&nbsp;&nbsp;&nbsp;&nbsp;没法子了，只能Google一下了，其实都是格式的问题，U盘和移动硬盘一般都是NTFS格式的，而Mac是不支持这个格式磁盘的写入的，所以在Mac上无法拷贝文件到U盘。
+&nbsp;&nbsp;&nbsp;&nbsp;没法子了，只能Google一下了，其实就是格式的问题，U盘和移动硬盘一般都是NTFS格式的，而Mac是不支持这个格式磁盘的写入的，所以在Mac上无法拷贝文件到U盘。所以，要么就是格式化U盘，然后再重新刷U盘。
 <img src="https://user-images.githubusercontent.com/6279298/211694505-dac30b23-e055-4201-85c5-54c09544cb95.png" alt="Girl in a jacket" width="60" height="60">
 
-&nbsp;&nbsp;&nbsp;&nbsp;算了要不我直接在Mac上看吧，Mac上的唯一的播放器只有`QuickTimer`, 但是此播放器能支持的格式又是有限了，下载的电影格式一般都是`mkv`格式为主，所以QuickTime自然也就不支持的咯。这时候，解决办法想了两个。要么下载一个可以支持其他格式的播放器，要么就是转格式。我选择了后者，作为新生代农民工的我呢还是想要用自己的手艺解决这个问题，那就是写代码搞定，其实是没有找到比较好的工具。
+&nbsp;&nbsp;&nbsp;&nbsp;算了要不我直接在Mac上看吧，Mac上的唯一的播放器只有`QuickTimer`, 但是此播放器能支持的格式又是有限了，下载的电影格式一般都是`mkv`格式为主，所以QuickTime自然也就不支持的咯。这时候，解决办法想了两个。要么下载一个可以支持其他格式的播放器，要么就是转格式。我选择了后者，作为新生代农民工的我呢还是想要用自己的手艺来解决这个问题，那就是写代码搞定，其实是没有找到比较好的工具。
 &nbsp;&nbsp;&nbsp;&nbsp;开始Google，`how to convert mkv to mp4 in java` <img width="200" alt="how to convert mkv to mp4 in java" src="https://user-images.githubusercontent.com/6279298/211951360-4aa64823-af8b-4005-815e-53942aa3c2e5.png"> , 
 `how to convert mkv to mp4 in python`<img width="200" alt="how to convert mkv to mp4 in python" src="https://user-images.githubusercontent.com/6279298/211951383-352e6dde-5ca9-4615-be68-32ba84f1cf60.png"> ,
 `~ in golang` <img width="200" alt="how to convert mkv to mp4 in golang" src="https://user-images.githubusercontent.com/6279298/211951464-68d133a1-3748-4d34-a5f3-2f08333f43ed.png">
 从每个搜索结果中都能发现一个相同的工具<font color=red size=3>**ffmpeg**</font>, 很好奇这个是干嘛的的东西，大家就接着往下看吧
 
 ## ffmpeg是什么
-&nbsp;&nbsp;&nbsp;&nbsp;<font>**FFmpeg**</font>是一个免费的开源软件项目，由一套处理视频、音频和其他多媒体文件和流的库和程序组成。ffmpeg的主要的是被当做命令行工具来使用，ffmpeg主要用于处理视频和音频文件。它被广泛用于格式转换、基本编辑(修剪和拼接)、视频缩放、视频后期制作效果</p>
-&nbsp;&nbsp;&nbsp;&nbsp;FFmpeg除了本身的工具之外，实际上是被分成了是三个工具`ffmpeg`，`ffprobe`以及`ffplay`。[ffprobe](http://ffmpeg.org/ffprobe.html)主要用于分析流媒体数据，提取流媒体中的音视频信息，[ffplay](http://ffmpeg.org/ffplay.html)是ffmpeg开发的minimal的视频播放器，但是这三类工具都是命令行工具，对于不太了解计算机的同学来说有一定的上手难度。
+&nbsp;&nbsp;&nbsp;&nbsp;<font>**FFmpeg**</font>是一个免费的开源软件项目，由一套处理视频、音频和其他多媒体文件和流的库和程序组成。ffmpeg主要是被当做命令行工具来使用，ffmpeg主要用于处理视频和音频文件。它被广泛用于格式转换、基本编辑(修剪和拼接)、视频缩放、视频后期制作效果</p>
+&nbsp;&nbsp;&nbsp;&nbsp;FFmpeg除了本身的工具之外，实际上是被分成了是三个工具`ffmpeg`，`ffprobe`以及`ffplay`。[ffprobe](http://ffmpeg.org/ffprobe.html)主要用于分析流媒体数据，提取流媒体中的音视频信息，[ffplay](http://ffmpeg.org/ffplay.html)是ffmpeg开发的minimal的视频播放器，但是这三类工具都是命令行工具，对于不太了解计算机的同学来说不是特别的友好。
 &nbsp;&nbsp;&nbsp;&nbsp;ffmpeg整体都是基于`C++`开发的一套框架，因为是开源项目，所以有很大的DIY空间。于此同时，对于不太熟悉`C++`的同学来说，如果想用ffmpeg来做一些二次开发，现在也有很多其他语言的wrapper包，以下这几个是star数比较多，而且提了issue作者会给回答的项目：
 - java 
   - [javacpp-presets](https://github.com/bytedeco/javacpp-presets/tree/master/ffmpeg)
@@ -144,7 +144,7 @@
     ]
   }
   ```
-  * 如果我们想过滤一些只有我们关心的数据我可以使用`-show_entries stream=codec_name,codec_type,duration`，来选择我们想要的数据，这样返回的数据就会比较简洁
+  * 如果我们想过滤一些只有我们关心的数据，可以使用`-show_entries stream=codec_name,codec_type,duration`，来选择我们想要的数据，这样返回的数据就会比较简洁
   ```json
   {
     "programs": [
@@ -162,9 +162,9 @@
 
 #### ffmpeg
 
-&nbsp;&nbsp;&nbsp;&nbsp;ffmpeg应该来说是这个里面BOSS了，能干的事情简直是太多了，说转换格式，剪辑视频，合并视频，添加视频的overlay，替换流媒体的音频，操作音频（合并声道，修改声道），生产playback文件等等
+&nbsp;&nbsp;&nbsp;&nbsp;ffmpeg应该来说是这个里面BOSS了，能干的事情简直是太多了，比如说转换格式，剪辑视频，合并视频，添加视频的overlay，替换流媒体的音频，操作音频（合并声道，修改声道），生成playback文件等等
 
-* 转换格式就是ffmpeg非常基础的技能了，`ffmpeg -v error -y -i <input source path> <output file name>.mp4`。场景我们在网络上下载了一段视频，扩展名是`mkv`。这个显然是无法在Mac直接播放的
+* 转换格式就是ffmpeg非常基础的技能了，`ffmpeg -v error -y -i <input source path> <output file name>.mp4`。以下的场景是我们在网络上下载了一段视频，扩展名是`mkv`。这个显然是无法在Mac直接播放的
 ```json
 {
     "programs": [
@@ -196,9 +196,9 @@
     }
 }
 ```
-我们来使用ffmpeg的转换技能，把`mkv`格式的文件转换成`mov`, `ffmpeg -v error -y -i test.mkv  test.mov`，这里不用指定流的编码方式，因为在转换的过程中会设定默认的合适的codec方法，等上一会，视频就是转好了当我点击的时候给我来了个这个<img width="100" alt="image" src="https://user-images.githubusercontent.com/6279298/213137069-6b427048-435f-4f68-a81f-3f2fd6401974.png">，打开是能打开，但是看不了视频，只闻其声不见其人。我用ffprobe分析了一下stream的数据，发现codec的方式h264，quicktime是不支持的。
+我们来使用ffmpeg的转换技能，把`mkv`格式的文件转换成`mov`, `ffmpeg -v error -y -i test.mkv  test.mov`，这里不用指定流的编码方式，因为在转换的过程中会设定默认的合适的codec方法，等上一会，视频就是转好了。当我点击的时候给我来了个这个<img width="100" alt="image" src="https://user-images.githubusercontent.com/6279298/213137069-6b427048-435f-4f68-a81f-3f2fd6401974.png">，打开是能打开，但是看不了视频，只闻其声不见其人。我用ffprobe分析了一下stream的数据，发现codec的方式h264，quicktime是不支持的。
 这时我添加了一个参数`ffmpeg -v error -y -i test.mkv  -vcodec prores test.mov`。这波操作，OK了，可以打开了</p>
-&#8194;&#8194;&#8194;&#8194;这时又有细心的朋友发现了些啥，为啥同样视频只是经过了一次转换，大小相差这么大。<img width="200" alt="image" src="https://user-images.githubusercontent.com/6279298/213139598-262c3a73-3881-42a8-92c2-e2a1e0279bda.png">。具体原因是啥呢，我再用ffprobe分析一波。原来是因为`bitrate`相差了很多哦，这玩意就是用来决定视频的清晰度的。查了一下文档，原来ffmpeg在不设定bitrate的时候，为了加快转换速度自己又自作主张的加了点戏，减少了一些bitrate。
+&#8194;&#8194;&#8194;&#8194;这时又有细心的朋友发现了些啥，为啥同样视频只是经过了一次转换，大小相差这么大<img width="200" alt="image" src="https://user-images.githubusercontent.com/6279298/213139598-262c3a73-3881-42a8-92c2-e2a1e0279bda.png">。具体原因是啥呢，我再用ffprobe分析一波。原来是因为`bitrate`相差了很多哦，这玩意就是用来决定视频的清晰度的。查了一下文档，原来ffmpeg在不设定bitrate的时候，为了加快转换速度自己又自作主张的加了点戏，减少了一些bitrate。
 <img width="1031" alt="image" src="https://user-images.githubusercontent.com/6279298/213140159-19c49e5d-72a3-4b9e-85ca-a1bf2d6bd7c1.png">
 &#8194;&#8194;&#8194;&#8194;那如果我想保持原来的大小该怎么办呢？这里我们可以使用`two-pass`的方式来设置想要转换的视频的bitrate的大小
 ```text
