@@ -208,4 +208,7 @@ ffmpeg -v error -y -i test.mkv -vcodec prores -b:v 4M -pass 1 -f null /dev/null
 
 ## 心得
 
-## 展望
+&#8194;&#8194;&#8194;&#8194;故事讲到这里，算是已经都讲完了，也实现了在Mac上直接播放的愿望。其实在学习ffmpeg的过程中还是了解到了很多图像相关的概念的，在这里我只是介绍了ffmpeg冰山一角的能力。当然在学习的过程中也越遇到一些自己一知半解的问题，如果大家有相关经验可以一块交流啊。
+
+
+&#8194;&#8194;&#8194;&#8194;<font size=5>**最后**</font>预祝大家<font size=6 color=red face="微软雅黑">**新**</font><font size=4 color=yellow face="微软雅黑">**年**</font><font size=5 color=green face="微软雅黑">**快**</font><font size=8 color=pink face="微软雅黑">**乐**</font> <font size=4>**!!!**</font>
