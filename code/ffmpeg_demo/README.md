@@ -326,7 +326,7 @@
               * both can split media into several small segments
         * the facts need to consider when encoding the media to adaptive streaming 
           * frame type
-          * ![concept of frame](https://user-images.githubusercontent.com/6279298/209314973-8a7aa325-a305- 42de-957a-ef14fd9966fe.png)
+          * ![concept of frame](https://user-images.githubusercontent.com/6279298/209314973-8a7aa325-a305-42de-957a-ef14fd9966fe.png)
           * What is the self-contained in GOPs
         * how to use ffmpeg to convert the media into HLS or DASH
           * HLS, TS, A+V, the format of playlist is `m3u8` and the segment is `ts`
