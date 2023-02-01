@@ -5,7 +5,7 @@
   * 协议使用包括两部分，第一部分是描述文件，`m3u8`， 第二部分是可播放的`ts`音视频文件
 * 我们为什么需要RTMP
   * RMTP使用的是TCP协议做的底层的传输协议，这样就可以保证低延迟，但是RMTP依赖于flash的播放器，但是在浏览器中已经停止了对`flash`的支持，所以浏览器在播放的时候就需要安装其他的插件
-  * 应该说是需要`RTMP server`来播放`HLS`
+  * 其实真正需要的，应该说是可以使用`RTMP server`来播放`HLS`的adaptive streaming的文件，两者是一种平行的关系，都是不同的streaming的协议
     * m3u8文件如何播放
       * 直接使用ffplay
         * `ffplay -v quiet -y 200 <path of the resource>`
