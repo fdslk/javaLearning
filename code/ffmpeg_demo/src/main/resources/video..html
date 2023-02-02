@@ -1,36 +1,23 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>video test</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--&lt;!&ndash;  <video width="320" height="240" controls>&ndash;&gt;-->
-<!--&lt;!&ndash;      <source src="/Users/zengqiangfang/Documents/test-resource/adaptive.m3u8" type="video/mp4">&ndash;&gt;-->
-<!--&lt;!&ndash;  </video>&ndash;&gt;-->
-<!--    <video width="352" height="198" controls>-->
-<!--        <source src="/Users/zengqiangfang/Documents/test-resource/adaptive.m3u8" type="application/x-mpegURL">-->
-<!--    </video>-->
-<!--</body>-->
-<!--</html>-->
+<!--Safari can work-->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset=utf-8 />
     <title>Your title</title>
-    <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
 </head>
 <body>
-    <video id=example-video width=600 height=300 class="video-js vjs-default-skin" controls>
-        <source
-                src="/Users/zengqiangfang/Documents/test-resource/adaptive.m3u8"
-                type="application/x-mpegURL">
-    </video>
-    <script src="https://unpkg.com/videojs-flash/dist/videojs-flash.js"></script>
-    <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
-    <script>
-    var player = videojs('example-video');
-    player.play();
-    </script>
+<h1>Video.js Example Embed</h1>
+
+<video-js id="my_video_1" class="vjs-default-skin" controls preload="auto" width="640" height="268">
+<!--    <source src="http://tivolicraft.com/playlist/play.m3u8" type="application/x-mpegURL">-->
+    <source src="http://localhost:8080/adaptive.m3u8" type="application/x-mpegURL">
+</video-js>
+
+<script src="https://unpkg.com/video.js/dist/video.js"></script>
+<script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>
+
+<script>
+    var player = videojs('my_video_1');
+</script>
 </body>
 </html>

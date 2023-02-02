@@ -10,7 +10,18 @@
       * 直接使用ffplay
         * `ffplay -v quiet -y 200 <path of the resource>`
       * 浏览器直接播放（html5的video），不需要额外的传输服务器
-        * how to
+        * 在本地班playlist的manifest用server host起来，这里我们可以使用node环境的来把本地的某个`path`host起来
+          * `npm install http-server -g`
+          * host文件夹
+            * cd到需要host的path下
+              * `cd <path>`
+              * `http-server`
+            * 直接host需要访问的path
+              * `http-server <path>`
+          * ![host successfully](https://user-images.githubusercontent.com/6279298/216209862-96b23edb-4a75-4137-8619-ac4976a1d195.png)
+          * tips:
+            * 必须使用http server，如果直接使用本机的file server是无法工作的
+            * `mov`转换成ts文件无法播放，但是MPEG-4的是可以？
       * 搭建RTMP server
         * how to
       * 搭建SRT server
