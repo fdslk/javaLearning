@@ -35,6 +35,7 @@
               * 使用脚本 `sudo ./install_ant-media-server.sh -i <ANT_MEDIA_SERVER_INSTALLATION_FILE>`
                 * tips
                   * 如果在`mac`上，直接运行 `unzip <ANT_MEDIA_SERVER_INSTALLATION_FILE>`，因为上述的安装脚本是针对于`Ubuntu`的linux系统，对于mac不适用
+                  * 或者还可以使用[docker](https://github.com/Fdslk/javaLearning/blob/master/code/ffmpeg_demo/Dockerfile)
               * 使用
                 * 启动 `sudo service antmedia stop`
                 * 终止 `sudo service antmedia start`
