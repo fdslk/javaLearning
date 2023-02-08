@@ -8,10 +8,12 @@
 <body>
 <h1>Video.js Example Embed</h1>
 
-<video-js id="my_video_1" class="vjs-default-skin" controls preload="auto" width="640" height="268">
+<video id="my_video_1" class="vjs-default-skin" controls preload="auto" width="640" height="268">
 <!--    <source src="http://tivolicraft.com/playlist/play.m3u8" type="application/x-mpegURL">-->
     <source src="http://localhost:8080/adaptive.m3u8" type="application/x-mpegURL">
-</video-js>
+</video>
+
+<iframe width="560" height="315" src="http://localhost:5080/WebRTCApp/play.html?name=FcfjAwl9HHGp1675819323084" frameborder="0" allowfullscreen></iframe>
 
 <script src="https://unpkg.com/video.js/dist/video.js"></script>
 <script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>
