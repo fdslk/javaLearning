@@ -31,6 +31,7 @@
       * tips:
         * 必须使用http server，如果直接使用本机的file server是无法工作的
         * `mov`转换成ts文件无法播放，但是MPEG-4的是可以？
+      * 把manifest嵌入到[html](https://github.com/Fdslk/javaLearning/blob/master/code/ffmpeg_demo/src/main/resources/video..html) 中，使用现成的js库播放。或者还可以使用[原生的js代码](https://github.com/Fdslk/javaLearning/blob/master/code/ffmpeg_demo/src/main/resources/adaptive-media-player.html) 处理的web，来播放manifest  
   * 搭建RTMP server
     * 方法一
       * 搭建`Ant Media server`
@@ -53,5 +54,17 @@
               * 如果在Mac上，可以直接进入到安装包中，然后运行 `./start.sh`，需要保证当前系统的java版本为<font size=3 color=blue>**java11**</font>以上
           * 在浏览器中输入`http://SERVERHOST:5080/` ，能够在浏览器中看到以下的界面
             * ![部署成功](https://user-images.githubusercontent.com/6279298/217185934-1d2f733a-f230-42f0-b24b-90d851558267.png)
+          * 注册之后，登录到主界面，发布直播流
+            * ![主界面](https://user-images.githubusercontent.com/6279298/219321664-d205b8d1-d19b-44bd-a5ca-e9853c9b4300.png)
+          * 进入到主界面之后
+            * 转播stream resource
+              * ![output](https://user-images.githubusercontent.com/6279298/219325653-0d7b411d-6ec5-4191-968a-19ee0fff1914.gif)
+              * tips: 使用**QuickTime Player**录屏，同样可以使用FFmpeg将mov文件转换成.gif文件
+                * ```text
+                  ffmpeg  -i  <input file> \                                                                                       ok  base py  17:32:41
+                    -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
+                    -loop 0 output.gif
+                  ```
+            * 转播playlist
   * 搭建SRT server
     * how to
