@@ -38,6 +38,7 @@
         * 什么是？
           * is one of the fastest-growing and most popular streaming engines. Ant Media Server supports WebRTC, CMAF, HLS, RTMP, RTSP, and more for your critical business streaming needs
           * 如果是个人用户可以免费使用，但是如果是企业级用户则需要付费
+          * 更多的细节部分，大家可以参阅[官网](https://resources.antmedia.io/docs)
         * how to
           * 下载 [ant-media-server](https://github.com/ant-media/Ant-Media-Server/releases/download/ams-v2.5.3/ant-media-server-community-2.5.3.zip) 安装包
           * cd `zip` 包的路径
@@ -58,7 +59,7 @@
             * ![主界面](https://user-images.githubusercontent.com/6279298/219321664-d205b8d1-d19b-44bd-a5ca-e9853c9b4300.png)
           * 进入到主界面之后
             * 转播stream resource
-              * ![output](https://user-images.githubusercontent.com/6279298/219325653-0d7b411d-6ec5-4191-968a-19ee0fff1914.gif)
+              * ![live stream output](https://user-images.githubusercontent.com/6279298/219325653-0d7b411d-6ec5-4191-968a-19ee0fff1914.gif)
               * tips: 使用**QuickTime Player**录屏，同样可以使用FFmpeg将mov文件转换成.gif文件
                 * ```text
                   ffmpeg  -i  <input file> \                                                                                       ok  base py  17:32:41
@@ -66,5 +67,49 @@
                     -loop 0 output.gif
                   ```
             * 转播playlist
+              * ![playlist output](https://user-images.githubusercontent.com/6279298/219523963-2e42d6f5-3cfe-41c4-8b48-4666988da521.gif)
+    * 方法二
+      * 搭建nginx+RTMP
+        * 安装nginx `brew install nginx`
+        * 安装nginx rtmp module，`brew install nginx-full --with-rtmp-module`
+          * tip
+            * 当运行上述命令式报出以下错误时，[`Error: invalid option: --with-rtmp-module`](https://stackoverflow.com/questions/61931028/installing-homebrew-nginx-rtmp-in-macos-movaje-10-14) 可以运行 `brew tap denji/nginx`，然后再安装rtmp module
+            * 安装成功之后会有以下提示
+              * ```text
+                Docroot is: /usr/local/var/www
+                The default port has been set in /usr/local/etc/nginx/nginx.conf to 8080 so that
+                nginx can run without sudo.
+                
+                nginx will load all files in /usr/local/etc/nginx/servers/.
+                
+                - Tips -
+                  Run port 80:
+                  $ sudo chown root:wheel /usr/local/opt/nginx-full/bin/nginx
+                  $ sudo chmod u+s /usr/local/opt/nginx-full/bin/nginx
+                  Reload config:
+                  $ nginx -s reload
+                  Reopen Logfile:
+                  $ nginx -s reopen
+                  Stop process:
+                  $ nginx -s stop
+                  Waiting on exit process
+                  $ nginx -s quit
+                
+                To start denji/nginx/nginx-full now and restart at login:
+                brew services start denji/nginx/nginx-full
+                Or, if you don't want/need a background service you can just run:
+                nginx
+                ```
+        * 使用ffmpeg推流
+          * ```
+            ffmpeg -v quiet -i "<stream resource locatopm>" \
+              -vf "scale=-2:200,drawtext=fontfile='c\:/Windows/Fonts/courbd.ttf':text=RTMP:fontsize=30:x=10:y=20:fontcolor=#000000:box=1:boxborderw=5:boxcolor=#ff888888" \
+              -vcodec libx264 -f flv <rtmp server url>
+            ```
+        * 使用ffplay验证推流成功
+          * `ffplay -v quiet <rtmp server url>`
+          * ![ffplay play pulling streaming successfully](https://user-images.githubusercontent.com/6279298/220020493-dc16cbc8-2a4a-4ae4-a442-5f4674266d2d.gif)
+        * 使用VLC验证推流成功
+          * 
   * 搭建SRT server
     * how to
