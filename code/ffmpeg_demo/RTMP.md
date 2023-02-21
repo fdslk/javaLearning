@@ -110,6 +110,18 @@
           * `ffplay -v quiet <rtmp server url>`
           * ![ffplay play pulling streaming successfully](https://user-images.githubusercontent.com/6279298/220020493-dc16cbc8-2a4a-4ae4-a442-5f4674266d2d.gif)
         * 使用VLC验证推流成功
-          * 
+          * 下载[VLC](https://get.videolan.org/vlc/3.0.18/macosx/vlc-3.0.18-intel64.dmg)
+          * ![verify streaming by VLC](https://user-images.githubusercontent.com/6279298/220246480-5f8027db-87e2-490d-8c7e-1acaa4a95dce.gif)
+    * 方法三
+      * 搭建[rtsp-simple-server](https://github.com/aler9/rtsp-simple-server) 服务器
+        * 使用方式
+          * 下载[server release package](https://github.com/aler9/rtsp-simple-server/releases) ，unzip该文件包，然后`./rtsp-simple-server`, 就可以使用了
+          * 使用docker方式启动
+          * OpenWRT
+        * 推流
+          * `ffmpeg -re -stream_loop -1 -i http://localhost:8080/nature.mp4  -c copy -f rtsp rtsp://localhost:8554/mystream`
+        * 验证
+          * ffmpeg
+          * vlc
   * 搭建SRT server
     * how to
