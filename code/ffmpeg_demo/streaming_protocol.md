@@ -1,20 +1,29 @@
 # Streaming protocol
 ### 可以用来干什么？
-* 这个协议的作用是用来规范流媒体的delivery和ingest（streaming protocol via TCP）
+* 这个协议的作用是用来规范流媒体的delivery和ingest
 ### 协议有哪些？
 * 普通的
   * RTMP（real-time message protocol） 
-    * RMTP使用的是TCP协议做的底层的传输协议，这样就可以保证低延迟，但是RMTP依赖于flash的播放器，但是在浏览器中已经停止了对`flash`的支持，所以浏览器在播放的时候就需要安装其他的插件
-  * SRT
-  * HTTP
-  * WebRTC
-* adaptive streaming protocol
-  * HLS HLS是一种stream的解决方案 (streaming protocol based on http)
-    * 协议使用包括两部分，第一部分是描述文件，`m3u8`， 第二部分是可播放的`ts`音视频文件
-    * 其实真正需要的，应该说是可以使用`RTMP server`来播放`HLS`的adaptive streaming的文件，两者是一种平行的关系，都是不同的streaming的协议
-  * DASH
+    * RTMP使用的是TCP协议做的底层的传输协议，这样就可以保证低延迟，但是RMTP依赖于flash的播放器，但是在浏览器中已经停止了对`flash`的支持，所以浏览器在播放的时候就需要安装其他的插件
+  * SRT（Secure Reliable Transport） 
+    * 是一种基于UDP的开源视频传输协议，SRT 专为低延迟实时视频传输而设计
+  * WebRTC（Wowza’s Real-Time Streaming at Scale feature）
+    * 作为最快的可用技术，WebRTC可向任何主要浏览器传送近乎即时的语音和视频流
+  * RTSP (real-time streaming protocol)
+    * RTSP用于控制两个端点之间的音频/视频传输，并促进低延迟流媒体内容在互联网上的传输，它的起源要早于RTMP
+* adaptive streaming protocol based on http
+  * HLS (http live streaming)
+    * 协议使用包括两部分，第一部分是描述文件`m3u8`， 第二部分是可播放的`ts`音视频文件，HLS最初源于IOS生态圈，随着技术的发展，HLS被越来越多的平台所接纳，例如，Google Chrome，Android，linux等等
+  * MPEG-DASH （Dynamic Adaptive Streaming over HTTP）
+    * MPEG-DASH 类似于另一种流媒体协议 HLS，因为它将视频分解成更小的块，并以不同的质量级别对这些块进行编码。 这使得可以流式传输不同质量级别的视频，并在视频中间从一个质量级别切换到另一个质量级别，不同于HLS，DASH的manifest是使用`xml`，容器使用的`m4s`，个人感觉m3u8使用起来更加的清晰
+#### 实际的使用场景
+  * 桌面共享
+  * 摄像头实时监控
+    * 安全监控
+    * 直播
+  * 家庭影院
 ### 为什么不能直接播放流
-### 如何使用
+### 如何使用（如何使用这些流协议播放视频）
 * m3u8文件如何播放
   * 直接使用ffplay
     * `ffplay -v quiet -y 200 <path of the playlist resource>`
@@ -32,7 +41,7 @@
         * 必须使用http server，如果直接使用本机的file server是无法工作的
         * `mov`转换成ts文件无法播放，但是MPEG-4的是可以？
       * 把manifest嵌入到[html](https://github.com/Fdslk/javaLearning/blob/master/code/ffmpeg_demo/src/main/resources/video..html) 中，使用现成的js库播放。或者还可以使用[原生的js代码](https://github.com/Fdslk/javaLearning/blob/master/code/ffmpeg_demo/src/main/resources/adaptive-media-player.html) 处理的web，来播放manifest  
-  * 搭建RTMP server
+  * 搭建streaming push server
     * 方法一
       * 搭建`Ant Media server`
         * 什么是？
@@ -123,5 +132,13 @@
         * 验证
           * ffmpeg
           * vlc
-  * 搭建SRT server
-    * how to
+    * 各种推流服务器之间的比较
+* |                    | supported protocol | supported codec | freeium | advantage | disadvantage |
+  |--------------------|--------------------|-----------------|---------|-----------|--------------|
+  | ant media server   |                    |                 |         |           |              |
+  | nginx-rtmp-module  |                    |                 |         |           |              |
+  | rtsp-simple-server |                    |                 |         |           |              |
+#### reference
+* [Streaming Protocols: Everything You Need to Know (Update)](https://www.wowza.com/blog/streaming-protocols)
+* [What is MPEG-DASH? | HLS vs. DASH](https://www.cloudflare.com/learning/video/what-is-mpeg-dash/)
+* 
