@@ -133,12 +133,11 @@
           * ffmpeg
           * vlc
     * 各种推流服务器之间的比较
-* |                    | supported protocol | supported codec | freeium | advantage | disadvantage |
-  |--------------------|--------------------|-----------------|---------|-----------|--------------|
-  | ant media server   |                    |                 |         |           |              |
-  | nginx-rtmp-module  |                    |                 |         |           |              |
-  | rtsp-simple-server |                    |                 |         |           |              |
+* |                    | pulling supported protocol |       pushing supported protocol       | freeium |            latency           | advantage | disadvantage |
+  |--------------------|:--------------------------:|:--------------------------------------:|:-------:|:----------------------------:|:---------:|:------------:|
+  | ant media server   |      RTSP, RTMP & HLS      |              RTMP & WebRTC             |   yes   | 8s-12s for community version |           |              |
+  | nginx-rtmp-module  |             N/A            |          RTMP, HLS & MPEG-DASH         |   yes   |                              |           |              |
+  | rtsp-simple-server |  RTSP, RTMP, HLS & WebRTC  | RTSP, RTMP, HLS & Raspberry Pi Cameras |   yes   |                              |           |              |
 #### reference
 * [Streaming Protocols: Everything You Need to Know (Update)](https://www.wowza.com/blog/streaming-protocols)
 * [What is MPEG-DASH? | HLS vs. DASH](https://www.cloudflare.com/learning/video/what-is-mpeg-dash/)
-* 
