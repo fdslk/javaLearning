@@ -18,11 +18,12 @@
     * MPEG-DASH 类似于另一种流媒体协议 HLS，因为它将视频分解成更小的块，并以不同的质量级别对这些块进行编码。 这使得可以流式传输不同质量级别的视频，并在视频中间从一个质量级别切换到另一个质量级别，不同于HLS，DASH的manifest是使用`xml`，容器使用的`m4s`，个人感觉m3u8使用起来更加的清晰
 #### 实际的使用场景
   * 桌面共享
-  * 摄像头实时监控
+  * 摄像头实时播放
     * 安全监控
     * 直播
   * 家庭影院
 ### 为什么不能直接播放流
+* 对于这个换句话来说，我们可以这样问，"我们为什么需要一个流媒体服务器，它能帮我们干嘛？"举个🌰，假使我们的生活中没有media server，那么我们消费流媒体的流程如下，用户上传资源，某个平台提供视频资源下载，然后在本地播放，oops格式不支持，下载支持的播放器，或者下载转码工具，一番折腾之后开始看电影。但是如果有了media，这个过程会变成什么样呢？
 ### 如何使用（如何使用这些流协议播放视频）
 * m3u8文件如何播放
   * 直接使用ffplay
@@ -133,11 +134,13 @@
           * ffmpeg
           * vlc
     * 各种推流服务器之间的比较
-* |                    | pulling supported protocol |       pushing supported protocol       | freeium |            latency           | advantage | disadvantage |
-  |--------------------|:--------------------------:|:--------------------------------------:|:-------:|:----------------------------:|:---------:|:------------:|
-  | ant media server   |      RTSP, RTMP & HLS      |              RTMP & WebRTC             |   yes   | 8s-12s for community version |           |              |
-  | nginx-rtmp-module  |             N/A            |          RTMP, HLS & MPEG-DASH         |   yes   |                              |           |              |
-  | rtsp-simple-server |  RTSP, RTMP, HLS & WebRTC  | RTSP, RTMP, HLS & Raspberry Pi Cameras |   yes   |                              |           |              |
+* |                    | pulling supported protocol |       pushing supported protocol       | supported OS                                                           | freeium |            latency           |                           advantage                           |        disadvantage        |
+  |--------------------|:--------------------------:|:--------------------------------------:|------------------------------------------------------------------------|:-------:|:----------------------------:|:-------------------------------------------------------------:|:--------------------------:|
+  | ant media server   |      RTSP, RTMP & HLS      |              RTMP & WebRTC             | Linux/MacOS/Windows <br>(cloud:AWS/Azure/Alibaba/Digital Ocean/Linode) |   yes   | 8s-12s for community version | provide GUI, user-friendly,<br>open source, community support | some features need payment |
+  | nginx-rtmp-module  |     RTMP/HLS/MPEG-DASH     |          RTMP, HLS & MPEG-DASH         | Linux/FreeBSD/MacOS/Windows                                            |   yes   | control by parameter         | more flexible, open source, <br>community support             | not support webRTC         |
+  | rtsp-simple-server |  RTSP, RTMP, HLS & WebRTC  | RTSP, RTMP, HLS & Raspberry Pi Cameras | Linux/MacOS/Windows                                                    |   yes   | control by parameter         | open source, community support                                |                            |
 #### reference
 * [Streaming Protocols: Everything You Need to Know (Update)](https://www.wowza.com/blog/streaming-protocols)
 * [What is MPEG-DASH? | HLS vs. DASH](https://www.cloudflare.com/learning/video/what-is-mpeg-dash/)
+* [RTMP server guide: How to set up a free RTMP server](https://antmedia.io/what-is-rtmp-server-how-to-set-up-a-free-rtmp-server/)
+* [3 Reasons Why You Need a Streaming Media Server](https://www.wowza.com/blog/why-you-need-a-streaming-media-server#simulcasting)
