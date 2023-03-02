@@ -1,7 +1,9 @@
 # Streaming protocol
-### 可以用来干什么？
+### 前言
+* 上一篇 [文章](https://github.com/Fdslk/javaLearning/blob/master/code/ffmpeg_demo/Blog.md) 中写到了，我是如何使用FFmpeg将不能直接播放的视频弄成QuickTime支持的格式。那些个操作感觉就是有些个笨拙，充满了程序员式的执著。难道我要在电视上播放一个视频，就非得转码，然后再拷贝到电视上么。<font size=4 color=green>**非也**</font>，其实任何音视频都是<font size=6>"**流**"</font>。那么流是不是就可以传输呢，水可以通过水管传输到我们想要的地方，那音视频怎么传播呢，靠的是网络架构中的传输层传递。那么在接下来的文章中，我将和大家来谈谈我怎么实现的流的传输。
+### streaming可以用来干什么？
 * 流协议主要用于规范流媒体的delivery和ingest
-### 协议有哪些？
+### streaming协议有哪些？
 * 普通的
   * RTMP（real-time message protocol） 
     * RTMP使用的是TCP协议做的底层的传输协议，这样就可以保证低延迟，但是RMTP依赖于flash的播放器，<font size=4 color=red>**But**</font>现在浏览器中已经停止了对`flash`的支持，所以如果想要在浏览器中直接播放就需要安装flash相关的插件
@@ -16,7 +18,7 @@
     * 协议使用包括两部分，第一部分是（manifest）描述文件`m3u8`， 第二部分是可播放的`ts`音视频文件，HLS最初源于IOS生态圈，随着技术的发展，HLS被越来越多的平台所接纳，例如，Google Chrome，Android，linux等等
   * MPEG-DASH （Dynamic Adaptive Streaming over HTTP）
     * MPEG-DASH 类似于另一种流媒体协议 HLS，因为它将视频分解成更小的块，并以不同的质量级别对这些块进行编码。 这使得可以流式传输不同质量级别的视频(举个🌰，这里的不同质量，只得是不同的分辨率的视频)，并在视频中间从一个质量级别切换到另一个质量级别，不同于HLS，DASH的manifest是使用`xml`，容器使用的`m4s`，个人感觉m3u8作为资源管理文件使用起来更加的清晰，因为DASH的所有配置都杂糅在一个文件中
-#### 流传输在现实中的使用场景
+### 流传输在现实中的使用场景
   * 桌面共享
   * 摄像头实时播放
     * 安全监控
@@ -40,7 +42,7 @@
         * `http-server <path>`
     * ![host successfully](https://user-images.githubusercontent.com/6279298/216209862-96b23edb-4a75-4137-8619-ac4976a1d195.png)
     * tips:
-      * 必须使用http server将需要的manifest和对应的音视频资源host住，如果直接使用本机的file server是无法工作的
+      * 必须使用http server将需要的manifest和对应的音视频资源host，如果直接使用本机的file server是无法工作的
     * 把manifest嵌入到[html](https://github.com/Fdslk/javaLearning/blob/master/code/ffmpeg_demo/src/main/resources/video..html) 中，使用现成的js库播放。或者还可以使用[原生的js代码](https://github.com/Fdslk/javaLearning/blob/master/code/ffmpeg_demo/src/main/resources/adaptive-media-player.html) 处理的web，来播放manifest  
 * 搭建streaming push server （搭建media server），本文中将介绍三种推流服务器的搭建方式
   * 方法一
@@ -139,7 +141,10 @@
       | ant media server   |      RTSP, RTMP & HLS      |              RTMP & WebRTC             | Linux/MacOS/Windows <br>(cloud:AWS/Azure/Alibaba/Digital Ocean/Linode) |   yes   | 8s-12s for community version | provide GUI, user-friendly,<br>open source, community support | some features need payment |
       | nginx-rtmp-module  |     RTMP/HLS/MPEG-DASH     |          RTMP, HLS & MPEG-DASH         | Linux/FreeBSD/MacOS/Windows                                            |   yes   | control by parameter         | more flexible, open source, <br>community support             | not support webRTC         |
       | rtsp-simple-server |  RTSP, RTMP, HLS & WebRTC  | RTSP, RTMP, HLS & Raspberry Pi Cameras | Linux/MacOS/Windows                                                    |   yes   | control by parameter         | open source, community support                                |                            |
-#### reference
+### 展望
+* 实现一个家庭观影系统
+* 考虑一下如何上云
+### reference
 * [Streaming Protocols: Everything You Need to Know (Update)](https://www.wowza.com/blog/streaming-protocols)
 * [What is MPEG-DASH? | HLS vs. DASH](https://www.cloudflare.com/learning/video/what-is-mpeg-dash/)
 * [RTMP server guide: How to set up a free RTMP server](https://antmedia.io/what-is-rtmp-server-how-to-set-up-a-free-rtmp-server/)
