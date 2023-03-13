@@ -1,0 +1,8 @@
+<aspectj>
+    <aspects>
+        <aspect name="org.zqf.aop.AspectJService.SecuredMethodAspect"/>
+        <weaver options="-verbose -showWeaveInfo">
+            <include within="com.zqf.aop.AspectJService"/>
+        </weaver>
+    </aspects>
+</aspectj>
