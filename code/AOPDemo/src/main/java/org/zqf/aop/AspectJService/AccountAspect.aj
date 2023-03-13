@@ -10,6 +10,7 @@ public aspect AccountAspect {
 
     before(int amount, Account acc) : callWithDraw(amount, acc) {
             System.out.println(MessageFormat.format("Balance before withdrawal: {0}", acc.balance));
+            System.out.println(MessageFormat.format("Account address: {0}", acc.toString()));
             System.out.println(MessageFormat.format("Withdraw ammout: {0}", amount));
     }
 
