@@ -1,0 +1,22 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="AccountService"
+          class= "org.zqf.aop.AspectJService.AccountService" />
+
+    <bean id="doAfterReturningAspect" class="org.zqf.aop.AspectJService.AdderAfterReturnAspect" />
+
+    <aop:config>
+
+        <aop:aspect id="aspects" ref="doAfterReturningAspect">
+            <aop:pointcut id="pointCutAfterReturning"
+                          expression="execution(* org.zqf.aop.AspectJService.AccountService.calculateAccount(..))" />
+            <aop:after-returning method="afterReturn"
+                                 returning="returnValue" pointcut-ref="pointCutAfterReturning" />
+        </aop:aspect>
+
+    </aop:config>
+
+</beans>
