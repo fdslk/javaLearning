@@ -1,11 +1,11 @@
 package com.example.demo;
 
 import com.example.demo.customer.Customer;
+import com.example.demo.order.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -39,5 +39,11 @@ public class TestController {
         }
         Mono<String> result = Mono.just(String.valueOf(param1/param2));
         return result;
+    }
+
+    @PostMapping(value = "/myendpoint", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<Order> handleRequest(@RequestBody Order request) {
+
+        return Mono.just(request);
     }
 }
