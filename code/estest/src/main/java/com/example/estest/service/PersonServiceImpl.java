@@ -33,6 +33,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import static com.example.estest.CustomFuture.getResult;
+
 @Service("PersonService")
 public class PersonServiceImpl implements PersonService {
 //public class PersonServiceImpl {
@@ -85,25 +87,19 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Option<Person> findPersonWithRHLCAsync(String name) {
-        return Option.of(new SearchResponseCallable()).map(task -> {
-            Future<SearchResponse> future = executor.submit(task);
-            restHighLevelClient
-                    .searchAsync(searchRequestBuilder(name), RequestOptions.DEFAULT,
-                            new SearchResponseActionListener(task));
-            return Try.of(future::get).toOption()
-                    .map(SearchResponse::getHits)
-                    .map(SearchHits::getHits)
-                    .map(x -> Arrays.stream(x).findFirst())
-                    .filter(Optional::isPresent)
-                    .map(x -> {
-                        try {
-                            return mapper.readValue(x.get().getSourceAsString(), Person.class);
-                        } catch (JsonProcessingException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    });
-        }).map(x -> x.getOrElse(defaultPerson));
+        return Option.of(getResult(restHighLevelClient, searchRequestBuilder(name)))
+                .map(SearchResponse::getHits)
+                .map(SearchHits::getHits)
+                .map(x -> Arrays.stream(x).findFirst())
+                .filter(Optional::isPresent)
+                .map(x -> {
+                    try {
+                        return mapper.readValue(x.get().getSourceAsString(), Person.class);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                    return defaultPerson;
+                });
     }
 
     private SearchRequest searchRequestBuilder(String name) {
